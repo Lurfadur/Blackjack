@@ -2,18 +2,22 @@
 #define DECK_H
 
 #include <vector>
-#include <Card.h>
+#include "Card.h"
+#include <algorithm>
+
+class Card;
 
 class Deck{
 
-  Public:
+  public:
     Deck();
-    void addCard(Card::Card);
-    Card::Card getCard();
+    void addCard(Card*);
+    Card* getCard();
+    int size();
     void shuffle();
 
-  Private:
-    vector<Card::Card> cards;
+  private:
+    std::vector<Card*> cards;
 
 };
 

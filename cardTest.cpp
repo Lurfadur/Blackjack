@@ -1,5 +1,6 @@
 #include "Card.h"
 #include "Deck.h"
+#include <string>
 
 int main(){
   
@@ -7,82 +8,94 @@ int main(){
 
   for(int i=0; i<4; i++){
     for(int j=0; j<13; j++){
-      char newSuit;
+      std::string newSuit;
       switch(i){
-        case 0: newSuit = '♠';
+        case 0: newSuit = u8"♠";
           break;
-        case 1: newSuit = '♥';
+        case 1: newSuit = u8"♥";
           break;
-        case 2: newSuit = '♣';
+        case 2: newSuit = u8"♣";
           break;
-        case 3: newSuit = '♦';
+        case 3: newSuit = u8"♦";
         break;
-        default: newSuit = 'E';
+        default: newSuit = "E";
       }
       
       int newValue;
-      char newFValue;
+      std::string newFValue;
       switch(j){
         case 0:
           newValue = 11;
-          newFValue = 'A';
+          newFValue = "A";
           break;
         case 1:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 2;
+          newFValue = "2";
           break;
         case 2:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 3;
+          newFValue = "3";
           break;
         case 3:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 4;
+          newFValue = "4";
           break;
         case 4:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 5;
+          newFValue = "5";
           break;
         case 5:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 6;
+          newFValue = "6";
           break;
         case 6:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 7;
+          newFValue = "7";
           break;
         case 7:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 8;
+          newFValue = "8";
           break;
         case 8:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 9;
+          newFValue = "9";
           break;
         case 9:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 10;
+          newFValue = "10";
           break;
         case 10:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 10;
+          newFValue = "J";
           break;
         case 11:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 10;
+          newFValue = "Q";
           break;
         case 12:
-          newValue = 11;
-          newFValue = 'A';
+          newValue = 10;
+          newFValue = "K";
           break;
         default:
           newValue = 0;
-          newFValue = 'E';
+          newFValue = "E";
       }
 
-      //Card* newCard = new Card(newValue, newFValue, newSuit);
-
+      Card* newCard = new Card(newValue, newFValue, newSuit);
+      newDeck.addCard(newCard);
+      newCard->display();
+    
     }
   }
+  std::cout << "Card Count: " << newDeck.size() << std::endl;
+  std::cout << "Shuffling... " << std::endl;
+  newDeck.shuffle();
+  for(int i=newDeck.size(); i>0; i--){
+   std::cout << i << " ";
+   Card* c = newDeck.getCard();
+   c->display();
+   delete(c);
+  }
+  std::cout << "Card Count: " << newDeck.size() << std::endl;
   return 0;
 }

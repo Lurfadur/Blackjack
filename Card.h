@@ -1,13 +1,19 @@
 #ifndef CARD_H
 #define CARD_H
 
+#include <iostream>
+#include <string>
+#include <iomanip>
+
+
 class Card{
-  Public:
-    Card(int newValue, char newFace_value, char newSuit);
-  Private:
+  public:
+    Card(int newValue, std::string newFace_value, std::string newSuit);
+    void display();
+  private:
     int value;
-    char face_value;
-    char suit;
+    std::string face_value;
+    std::string suit;
 };
 
 #endif
