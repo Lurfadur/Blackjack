@@ -21,7 +21,7 @@ all: directories $(BIN)
 
 directories: 
 	@echo "------------Building directories------------"
-	@mkdir -v $(OBJDIR)
+	@mkdir -pv $(OBJDIR)
 	@echo ""
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)

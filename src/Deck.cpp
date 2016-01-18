@@ -1,7 +1,9 @@
 #include "Deck.h"
 #include <vector>
 #include "Card.h"
-#include <algorithm>
+#include <algorithm> // std::random_shuffle
+#include <random> //std::default_random_engine
+#include <chrono> //std::chrono::system_clock
 
     Deck::Deck(){}
     
@@ -20,5 +22,7 @@
     }
 
     void Deck::shuffle(){
-      std::random_shuffle(cards.begin(), cards.end());
+      unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+      auto engine = std::default_random_engine(seed);
+      std::shuffle(cards.begin(), cards.end(), engine);
     }
