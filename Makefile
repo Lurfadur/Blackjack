@@ -10,33 +10,31 @@ CXXFLAGS = --std=c++11 -finput-charset=utf-8 -Wall
 
 SRCEXT := cpp
 SRCDIR := src
-OBJDIR := bin
-BLDDIR := $(OBJDIR)
 
 SRCS := $(shell find $(SRCDIR) -name '*.$(SRCEXT)')
-OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
-BIN := cardTest
+OBJS = $(patsubst $(SRCDIR)/%.cpp,%.o,$(SRCS))
 
-all: directories $(BIN)
+BIN := cardTest handTest
 
-directories: 
-	@echo "------------Building directories------------"
-	@mkdir -pv $(OBJDIR)
-	@echo ""
+cardTestDeps := Card.o Deck.o cardTest.o
+handTestDeps := Card.o Deck.o Hand.o Player.o handTest.o
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+all: handTest cardTest
+
+$(OBJS):
 	@echo "------------Compiling: " $@ "------------"
-	$(CXX) -o $@ -c $< $(CXXFLAGS)
+	$(CXX) -o $@ -c $(SRCDIR)/$(basename $@).$(SRCEXT) $(CXXFLAGS)
 	@echo ""
 
-$(BIN): $(OBJS)
-	@echo "------------Linking" $@ "------------"
+handTest: $(handTestDeps)
+	$(CXX) -o $@ $^ $(CXXFLAGS)
+
+cardTest: $(cardTestDeps)
 	$(CXX) -o $@ $^ $(CXXFLAGS)
 
 .PHONY: all directories clean
 
 clean:
 	@echo "------------Cleaning------------"
-	@rm -fv $(OBJDIR)/*.o
+	@rm -fv *.o
 	@rm -fv $(BIN)
-	@rmdir -v $(BLDDIR)
