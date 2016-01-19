@@ -3,11 +3,13 @@
 
 class Hand{
   public:
+		Hand();
     void displayHand();
     int cardCount();
     void addCard(Card*);
     void discard(Card*);
+		int getSum();
+		int getCardValue(int index);
   private:
-    int sum;
     std::vector<Card*> cards;
 };

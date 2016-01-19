@@ -1,9 +1,6 @@
 #
 #Makefile for CS362 BlackJack
 #
-#see
-#http://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html#Automatic-Variables
-#for reference information
 
 CXX = g++
 CXXFLAGS = --std=c++11 -finput-charset=utf-8 -Wall
@@ -17,7 +14,7 @@ OBJS = $(patsubst $(SRCDIR)/%.cpp,%.o,$(SRCS))
 BIN := cardTest handTest
 
 cardTestDeps := Card.o Deck.o cardTest.o
-handTestDeps := Deck.o Player.o Hand.o handTest.o
+handTestDeps := Card.o Deck.o Player.o Hand.o handTest.o
 
 all: handTest cardTest
 
@@ -27,10 +24,14 @@ $(OBJS):
 	@echo ""
 
 handTest: $(handTestDeps)
+	@echo "------------Linking: " $@ "------------"
 	$(CXX) -o $@ $^ $(CXXFLAGS)
+	@echo ""
 
 cardTest: $(cardTestDeps)
+	@echo "------------Linking: " $@ "------------"
 	$(CXX) -o $@ $^ $(CXXFLAGS)
+	@echo ""
 
 .PHONY: all directories clean
 
