@@ -6,11 +6,6 @@
 
 using namespace std;
 
-// Variables and vectors used at setup
-vector<Player *> players;
-vector<Deck *> decks;
-
-
 // Methods for testing and checking
 
 bool card_getCheck(Card *);
@@ -31,13 +26,38 @@ void shuffle_check(vector<Player *> players, vector<Deck *> decks);
 void deck_create(vector<Deck *> &decks);
 void deck_delete(vector<Deck *> &decks);
 void deal(vector<Player *> players, vector<Deck *> &decks);
-void create_player(vector<Player *> &players);
+void player_create(vector<Player *> &players);
 bool check_victory(vector<Player *> players);
 void split(vector<Player *> &players, vector<Deck *> &decks);
 
+int main(int argc, char **argv){
+	
+	// Variable and vector setup
+	vector<Player *> players;
+	vector<Deck *> decks;
 
+	bool game = true;
+	int playerCount = 2;
+	
+	// Deck and Player creation
+	for(int i = 0; i < playerCount; i++){
+		player_create(players);
+		deck_create(decks);
+		
+		if(!player_createCheck(players[i])){
+			cout << "ERROR: error in player creation, exiting program" << endl;
+			exit(1);
+		}
 
-int main(){
+		if(!deck_creationCheck(decks[i])){
+			cout << "ERROR: error in deck creation, exiting program" << endl;
+			exit(1);
+		}
+	}
 
-
+	// Master loop to run the game
+	while(game){
+		game = false; // prevent infinite loop
+		
+	}
 }
