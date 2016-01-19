@@ -13,6 +13,10 @@ void Player::addCard(Card* newCard){
   hand.addCard(newCard);
 }
 
+void Player::displayHand(){
+	hand.displayHand();
+}
+
 //Hand hand;
 //int bank;
 //int bet;

@@ -4,6 +4,7 @@ class Player{
   public:
     Player();
     void addCard(Card*);
+		void displayHand();
 
   private:
     Hand hand;

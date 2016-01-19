@@ -11,6 +11,7 @@ class Deck{
 
   public:
     Deck();
+		~Deck();
     void addCard(Card*);
     Card* getCard();
     int size();

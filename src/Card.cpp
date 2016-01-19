@@ -16,3 +16,10 @@ void Card::display(){
 int Card::getValue(){
   return value;
 }
+
+std::string Card::getFace_value(){
+	return face_value;
+}
+std::string Card::getSuit(){
+	return suit;
+}
