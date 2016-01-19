@@ -11,6 +11,7 @@ class Card{
     Card(int newValue, std::string newFace_value, std::string newSuit);
     void display();
     int getValue();
+    void setValue(int newValue);
 		std::string getFace_value();
 		std::string getSuit();
   private:

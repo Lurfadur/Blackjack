@@ -10,11 +10,19 @@ Card::Card(int newValue, std::string newFace_value, std::string newSuit){
 }
 
 void Card::display(){
-  std::cout << std::setw(3) << std::left << face_value << std::right << suit << std::endl;
+  std::cout << face_value;
+	if(face_value != "10"){
+	 	std::cout << " ";
+	}
+	std::cout << suit;
 }
 
 int Card::getValue(){
   return value;
+}
+
+void Card::setValue(int newValue){
+	value = newValue;
 }
 
 std::string Card::getFace_value(){
