@@ -17,7 +17,7 @@ OBJS = $(patsubst $(SRCDIR)/%.cpp,%.o,$(SRCS))
 BIN := cardTest handTest
 
 cardTestDeps := Card.o Deck.o cardTest.o
-handTestDeps := Deck.o Player.o handTest.o
+handTestDeps := Deck.o Player.o Hand.o handTest.o
 
 all: handTest cardTest
 
