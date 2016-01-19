@@ -3,7 +3,6 @@
 #include "Card.h"
 #include "Deck.h"
 #include "Player.h"
-
 using namespace std;
 
 // Methods for testing and checking
@@ -61,3 +60,21 @@ int main(int argc, char **argv){
 		
 	}
 }
+
+void player_create(vector<Player *> players){
+	Player * newPlayer = new Player();
+	players.push_back(newPlayer);
+}
+
+void deck_create(vector<Deck *> decks){
+
+}
+
+bool player_createCheck(Player *player){
+	return true;
+}
+
+bool deck_createCheck(Deck *deck){
+	return true;
+}
+
