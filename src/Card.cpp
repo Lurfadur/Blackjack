@@ -13,3 +13,6 @@ void Card::display(){
   std::cout << std::setw(3) << std::left << face_value << std::right << suit << std::endl;
 }
 
+int Card::getValue(){
+  return value;
+}
