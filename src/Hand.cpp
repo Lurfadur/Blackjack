@@ -25,9 +25,9 @@ void Hand::displayHand(){
 						cout << "----- ";
 						break;
 					case 1:
-						cout << "-";
+						cout << "|";
 						cards[i]->display();
-						cout << "- ";
+						cout << "| ";
 						break;
 					case 2:
 						cout << "----- ";
@@ -46,7 +46,17 @@ void Hand::addCard(Card* newCard){
 }
 
 void Hand::discard(Card* dis){
-  delete(dis);
+	for(int i=0; i<cards.size(); i++){
+		if(cards[i] == dis){
+			cards.erase(cards.begin()+i);
+		}
+	}
+}
+
+void Hand::discard(int position){
+	if(position >=0 && position <=cards.size()){
+		cards.erase(cards.begin()+position);
+	}
 }
 
 int Hand::getSum(){
@@ -74,8 +84,6 @@ int Hand::getSum(){
 			}
 		}
 	}
-
-
 	return retSum;
 }
 
@@ -83,4 +91,10 @@ int Hand::getCardValue(int index){
 	return cards[index]->getValue();
 }
 
-
+Card* Hand::getCard(int index){
+	if(index < cards.size() && index >= 0){
+		return cards[index];
+	}else{
+		return NULL;
+	}
+}

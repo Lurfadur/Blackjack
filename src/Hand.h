@@ -9,8 +9,10 @@ class Hand{
     int cardCount();
     void addCard(Card*);
     void discard(Card*);
+    void discard(int);
 		int getSum();
 		int getCardValue(int index);
+		Card* getCard(int index);
   private:
     std::vector<Card*> cards;
 };

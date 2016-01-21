@@ -43,6 +43,10 @@ void Player::discard(Card* card){
 	hand.discard(card);
 }
 
+void Player::discard(int position){
+	hand.discard(position);
+}
+
 int Player::getCardValue(int index){
 	return hand.getCardValue(index);
 }

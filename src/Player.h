@@ -13,6 +13,7 @@ class Player{
 		int getHandSum();
 		int getHandCount();
 		void discard(Card*);
+		void discard(int);
 		int getCardValue(int index);
 		Card* getCard(int index);
 
