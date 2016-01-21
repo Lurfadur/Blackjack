@@ -2,8 +2,14 @@
 #Makefile for CS362 BlackJack
 #
 
+#Compiler
 CXX = g++
+
+#Non-test build flags
 CXXFLAGS = --std=c++11 -finput-charset=utf-8 -Wall
+
+#Test build flags
+CXXTFLAGS = --std=c++11 -finput-charset=utf-8 -Wall -g
 
 SRCEXT := cpp
 SRCDIR := src
@@ -21,17 +27,17 @@ all: handTest cairdTest main
 
 $(OBJS):
 	@echo "------------Compiling: " $@ "------------"
-	$(CXX) -o $@ -c $(SRCDIR)/$(basename $@).$(SRCEXT) $(CXXFLAGS)
+	$(CXX) -o $@ -c $(SRCDIR)/$(basename $@).$(SRCEXT) $(CXXTFLAGS)
 	@echo ""
 
 handTest: $(handTestDeps)
 	@echo "------------Linking: " $@ "------------"
-	$(CXX) -o $@ $^ $(CXXFLAGS)
+	$(CXX) -o $@ $^ $(CXXTFLAGS)
 	@echo ""
 
 cardTest: $(cardTestDeps)
 	@echo "------------Linking: " $@ "------------"
-	$(CXX) -o $@ $^ $(CXXFLAGS)
+	$(CXX) -o $@ $^ $(CXXTFLAGS)
 	@echo ""
 
 main: $(mainDeps)
