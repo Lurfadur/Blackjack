@@ -1,16 +1,28 @@
 #include "Player.h"
 
-#define INIT_BANK_AMOUNT 1000
-
-
-Player::Player(){
-  bank = INIT_BANK_AMOUNT;
+Player::Player(int bankAmount){
+  bank = bankAmount;
   bet = 0;
   sideBet = 0;
 }
 
+Player::Player(){
+	bank = 1000;
+	bet = 0;
+	sideBet = 0;
+}
+
 void Player::addCard(Card* newCard){
   hand.addCard(newCard);
+}
+
+
+int Player::getBank(){
+	return bank;
+}
+
+void updateBank(int amount){
+	bank += amount;
 }
 
 
@@ -27,8 +39,16 @@ int Player::getHandSum(){
 	hand.getSum();
 }
 
+void Player::discard(Card* card){
+	hand.discard(card);
+}
+
 int Player::getCardValue(int index){
 	return hand.getCardValue(index);
+}
+
+Card* Player::getCard(int index){
+	return hand.getCard(index);
 }
 
 //Hand hand;
