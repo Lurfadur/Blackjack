@@ -9,7 +9,7 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Hand::Hand();
+Hand::Hand(){};
 
 void Hand::displayHand(){
 		for(int line = 0; line < 3; line++){

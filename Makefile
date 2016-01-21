@@ -11,12 +11,13 @@ SRCDIR := src
 SRCS := $(shell find $(SRCDIR) -name '*.$(SRCEXT)')
 OBJS = $(patsubst $(SRCDIR)/%.cpp,%.o,$(SRCS))
 
-BIN := cardTest handTest
+BIN := cardTest handTest main
 
+mainDeps := Card.o Deck.o Hand.o Player.o main.o
 cardTestDeps := Card.o Deck.o cardTest.o
 handTestDeps := Card.o Deck.o Player.o Hand.o handTest.o
 
-all: handTest cardTest
+all: handTest cairdTest main
 
 $(OBJS):
 	@echo "------------Compiling: " $@ "------------"
@@ -29,6 +30,11 @@ handTest: $(handTestDeps)
 	@echo ""
 
 cardTest: $(cardTestDeps)
+	@echo "------------Linking: " $@ "------------"
+	$(CXX) -o $@ $^ $(CXXFLAGS)
+	@echo ""
+
+main: $(mainDeps)
 	@echo "------------Linking: " $@ "------------"
 	$(CXX) -o $@ $^ $(CXXFLAGS)
 	@echo ""
