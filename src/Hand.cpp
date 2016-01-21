@@ -10,7 +10,11 @@ using std::endl;
 using std::string;
 
 Hand::Hand(){};
-
+Hand::~Hand(){
+	for(int i=0; i<cards.size(); i++){
+		delete cards[i];
+	}
+}
 void Hand::displayHand(){
 		for(int line = 0; line < 3; line++){
 			for(int i=0; i<cards.size(); i++){
@@ -65,7 +69,6 @@ int Hand::getSum(){
 					if(cards[i]->getValue() == 11){
 						cards[i]->setValue(1);
 						retSum -= 10;
-	
 					}
 				}
 			}
@@ -79,3 +82,5 @@ int Hand::getSum(){
 int Hand::getCardValue(int index){
 	return cards[index]->getValue();
 }
+
+

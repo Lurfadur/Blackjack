@@ -4,6 +4,7 @@
 class Hand{
   public:
 		Hand();
+		~Hand();
     void displayHand();
     int cardCount();
     void addCard(Card*);
