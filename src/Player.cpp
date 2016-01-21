@@ -21,7 +21,7 @@ int Player::getBank(){
 	return bank;
 }
 
-void updateBank(int amount){
+void Player::updateBank(int amount){
 	bank += amount;
 }
 
