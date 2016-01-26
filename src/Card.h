@@ -11,13 +11,13 @@ class Card{
     Card(int newValue, std::string newFace_value, std::string newSuit);
     void display();
     int getValue();
-    void setValue(int newValue);
+    void setValue(int newValue); //used for changing ace value
 		std::string getFace_value();
 		std::string getSuit();
   private:
-    int value;
-    std::string face_value;
-    std::string suit;
+    int value;	//returns in getValue(), set in setValue()
+    std::string face_value;	//used in display(), set in constructor
+    std::string suit;	//used in display(), set in constructor
 };
 
 #endif

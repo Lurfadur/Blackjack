@@ -18,7 +18,7 @@ class Deck{
     void shuffle();
 
   private:
-    std::vector<Card*> cards;
+    std::vector<Card*> cards; //accessed to distribute cards.
 
 };
 
