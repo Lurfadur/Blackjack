@@ -5,12 +5,13 @@
 #include <random> //std::default_random_engine
 #include <chrono> //std::chrono::system_clock
 
+    /*Create Deck*/
     Deck::Deck(){
-			for(int i=0; i<4; i++){
+		for(int i=0; i<4; i++){
   		  for(int j=0; j<13; j++){
-  		    std::string newSuit;
+  		    std::string newSuit; //declare newSuit
   		    switch(i){
-  		      case 0: newSuit = u8"♠";
+  		      case 0: newSuit = u8"♠"; //newSuit used on next 8 lines
   		        break;
   		      case 1: newSuit = u8"♥";
   		        break;
@@ -21,8 +22,8 @@
   		      default: newSuit = "E";
   		    }
   		    
-  		    int newValue;
-  		    std::string newFValue;
+  		    int newValue; //declare newVlaue, used in switch cases
+  		    std::string newFValue; //declare newFVlaue, used in switch cases
   		    switch(j){
   		      case 0:
   		        newValue = 11;
@@ -80,7 +81,7 @@
   		        newValue = 0;
   		        newFValue = "E";
   		    }
-  		                                                            
+          /*newValue, newFValue, newSuit used to create a new Card*/
   		    Card* newCard = new Card(newValue, newFValue, newSuit);
   		    cards.push_back(newCard);
   		    //newCard->display();
@@ -88,26 +89,45 @@
   		}
 		}
     
+    /*Pushes a new Card onto the Deck
+    * takes a Card pointer
+    * returns nothing
+    */
     void Deck::addCard(Card* newCard){
       cards.push_back(newCard);
     }
 
+    /*Gets a Card from the Deck
+    * takes nothing
+    * returns a pointer to a Card in the Deck
+    */
     Card* Deck::getCard(){
-      Card* retCard = cards.back();
+      Card* retCard = cards.back(); //assign a new Card obj to last element in vec
       cards.pop_back();
-      return retCard;
+      return retCard; 
     }
 
+    /*Gets the size of the deck, which is private
+    * takes nothing
+    * returns the size of Deck with an int
+    */
     int Deck::size(){
       return cards.size();
     }
 
+    /*Function to shuffle a Deck
+    * takes nothing
+    * returns nothing
+    */
     void Deck::shuffle(){
-      unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-      auto engine = std::default_random_engine(seed);
-      std::shuffle(cards.begin(), cards.end(), engine);
+      unsigned seed = std::chrono::system_clock::now().time_since_epoch().count(); //declare and assign seed variable
+      auto engine = std::default_random_engine(seed); //make and assign engine, seed used here
+      std::shuffle(cards.begin(), cards.end(), engine); // engine used here
     }
 
+    /*Function to delete a Deck
+    * takes nothing
+    */
 		Deck::~Deck(){
 			for(int i=0; i<cards.size(); i++){
 				delete(cards[i]);

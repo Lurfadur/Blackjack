@@ -3,10 +3,11 @@
 #include "Deck.h"
 #include "Player.h"
 using namespace std;
-// Methods for testing and checking
 
-#define NUM_CARDS 52
-#define BLACKJACK 21
+/* Methods for testing and checking*/
+
+#define NUM_CARDS 52 // Constant for the number of cards in a deck
+#define BLACKJACK 21 // Constant for the number for Blackjack
 
 bool card_getCheck(Card *);
 bool card_createCheck(Card *);
@@ -20,7 +21,8 @@ bool deck_lengthCheck(Deck *, int oldLength);
 bool player_createCheck(Player *); // done
 bool player_checkTotals(Player *); // checks bank, insurance, and bet
 
-// Methods for controlling game
+/* Methods for controlling game*/
+
 void hit(vector<Player *> players, vector<Deck *> &decks);
 bool shuffle_check(vector<Player *> players, vector<Deck *> decks); // done
 void deck_create(vector<Deck *> &decks); // done
