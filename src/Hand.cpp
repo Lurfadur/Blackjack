@@ -69,9 +69,19 @@ void Hand::addCard(Card* newCard){
 * returns nothing
 */
 void Hand::discard(Card* dis){
-	for(int i=0; i<cards.size(); i++){
-		if(cards[i] == dis){
+	int oldVal = this->cardCount(); // hand length
+	if (oldVal <= 0){ // make sure current hand length is not 0
+		cout << "Error with hand length\n";
+		exit(1);
+	}
+	/*look for card in hand*/
+	for (int i=0; i<cards.size(); i++){
+		if (cards[i] == dis){
 			cards.erase(cards.begin()+i);
+			if ((oldVal - this->cardCount()) != 1){
+				cout << "Error removing card from hand\n";
+				exit(1);
+			}
 		}
 	}
 }
