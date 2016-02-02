@@ -10,9 +10,11 @@ class Hand{
     void addCard(Card*);
     void discard(Card*);
     void discard(int);
+    void checkLength(int);
 		int getSum();
 		int getCardValue(int index);
 		Card* getCard(int index);
+    
   private:
     std::vector<Card*> cards; //accessed to hold cards and distribute cards on split
 };

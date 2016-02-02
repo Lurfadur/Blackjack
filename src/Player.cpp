@@ -57,7 +57,7 @@ void Player::displayHand(){
 * returns int
 */
 int Player::getHandCount(){
-	hand.cardCount();
+	return hand.cardCount();
 }
 
 /*Get the sum of a Player's Hand, which is private
@@ -65,7 +65,7 @@ int Player::getHandCount(){
 * returns int
 */
 int Player::getHandSum(){
-	hand.getSum();
+	return hand.getSum();
 }
 
 /*Function to remove a card from Player's Hand

@@ -58,3 +58,39 @@ std::string Card::getFace_value(){
 std::string Card::getSuit(){
 	return suit;
 }
+
+/*Chec the return values of getFace_value, getSuit and getValue
+* takes nothing
+* returns nothing
+*/
+void Card::card_getCheck(){
+	int testVal = this->getValue();
+	std::string testFace = this->getFace_value();
+	std::string testSuit = this->getSuit();
+	if (testVal < 1 || testVal > 11){
+		std::cout << "Error with card value\n";
+		exit(1);
+	}
+	if (testFace != "A" ||
+		testFace != "1" ||
+		testFace != "2" ||
+		testFace != "3" ||
+		testFace != "4" ||
+		testFace != "5" ||
+		testFace != "6" ||
+		testFace != "7" ||
+		testFace != "8" ||
+		testFace != "9" ||
+		testFace != "10" ||
+		testFace != "J" ||
+		testFace != "Q" ||
+		testFace != "K"){
+			std::cout << "Error with card face-value\n";
+			exit(1);
+	}
+	if (testSuit != u8"♠" || testSuit != u8"♥" || testSuit != u8"♣" || testSuit != u8"♦"){
+		std::cout << "Error with card suit-value\n";
+		exit(1);
+	}
+
+}

@@ -83,6 +83,11 @@
   		    }
           /*newValue, newFValue, newSuit used to create a new Card*/
   		    Card* newCard = new Card(newValue, newFValue, newSuit);
+          /*check that newly created card * is not NULL*/
+          if (newCard == NULL){
+            std::cout << "Error assigning memory to a card in Deck class\n";
+            exit(1);
+          }
   		    cards.push_back(newCard);
   		    //newCard->display();
   		 	}

@@ -20,6 +20,9 @@ Hand::~Hand(){
 	}
 }
 
+bool discard_check(){
+}
+
 /*Function to display formated visualiztion of a Hand
 * takes nothing
 * returns nothing
@@ -64,24 +67,33 @@ void Hand::addCard(Card* newCard){
     cards.push_back(newCard);
 }
 
+/*Checks hand length after removing a card form the hand
+* takes int
+* returns nothing
+*/
+void Hand::checkLength(int oldVal){
+	if (oldVal <= 0){
+		cout << "Error with hand length, shoudl be more than 0\n";
+		exit(1);
+	}
+	if ((oldVal - this->cardCount()) != 1){
+		cout << "Error removing card from the hand\n";
+		exit(1);
+	}
+
+}
+
 /*Function to remove Card from a Hand
 * takes pointer to Card object to remove
 * returns nothing
 */
 void Hand::discard(Card* dis){
-	int oldVal = this->cardCount(); // hand length
-	if (oldVal <= 0){ // make sure current hand length is not 0
-		cout << "Error with hand length\n";
-		exit(1);
-	}
 	/*look for card in hand*/
 	for (int i=0; i<cards.size(); i++){
 		if (cards[i] == dis){
+			int oldVal = this->cardCount(); // hand length
 			cards.erase(cards.begin()+i);
-			if ((oldVal - this->cardCount()) != 1){
-				cout << "Error removing card from hand\n";
-				exit(1);
-			}
+			this->checkLength(oldVal); // oldVal passed here
 		}
 	}
 }
@@ -92,13 +104,15 @@ void Hand::discard(Card* dis){
 */
 void Hand::discard(int position){
 	if(position >=0 && position <=cards.size()){
+		int oldVal = this->cardCount(); // hand length
 		cards.erase(cards.begin()+position);
+		this->checkLength(oldVal); // oldVal passed here
 	}
 }
 
 /*Get the sum of cards in a Hand
 * takes nothing
-* returns nothing
+* returns int
 */
 int Hand::getSum(){
 	/*Declare variables*/

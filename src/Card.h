@@ -14,6 +14,8 @@ class Card{
     void setValue(int newValue); //used for changing ace value
 		std::string getFace_value();
 		std::string getSuit();
+
+    void card_getCheck();
   private:
     int value;	//returns in getValue(), set in setValue()
     std::string face_value;	//used in display(), set in constructor

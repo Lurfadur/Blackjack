@@ -7,25 +7,14 @@
 #include <random> // std::default_random_engine
 #include <chrono> // std::chrono::system_clock
 using namespace std;
-<<<<<<< HEAD
 
 /* Methods for testing and checking*/
 
 #define NUM_CARDS 52 // Constant for the number of cards in a deck
 #define BLACKJACK 21 // Constant for the number for Blackjack
-=======
 
-// Methods for testing and checking
-
-#define NUM_CARDS 52 // number of cards in a deck
-#define BLACKJACK 21 // sum for blackjack
->>>>>>> graham
-
-bool card_getCheck(Card *);
-bool card_createCheck(Card *); // done
-
+// method to check bank amount when splitting that bank is >= to bet 
 bool hand_sumCheck(Hand *);
-bool hand_lengthCheck(Hand *, int oldLength); //done
 bool deck_creationCheck(Deck *); // done
 bool deck_lengthCheck(Deck *, int oldLength); //done
 
@@ -77,7 +66,7 @@ int main(int argc, char **argv){
 
 	/*shuffle the decks*/
 	for(int i = 0; i < decks.size(); i++){
-		decks[i].shuffle();
+		decks[i]->shuffle();
 	}
 
 	/* Master loop to run the game, if check_victory is false then continue loop
@@ -86,7 +75,7 @@ int main(int argc, char **argv){
 	while(!check_victory(players)){
 		
 	}
-}
+} //end main(
 
 // Method to create a new player, checks if new worked correctly
 void player_create(vector<Player *> &players){
@@ -126,33 +115,11 @@ bool deck_creationCheck(Deck *deck){
 	return retVal; // return bool value of retVal
 }
 
-// Checks to see if card memory has beel allocated correctly
-bool card_createCheck(Card *card){
-	bool retVal = true; // declare return value, assign value to true
-	if(card == NULL){
-		retVal = false; // change return value to false if card creation messed up
-	}
-	return retVal; // return bool value of retVal
-}
-
-bool card_getCheck(Card *card){
-	bool retVal = true;
-	if(card ==)
-}
-
 // Checks if deck length is one less after deal
 bool deck_lengthCheck(Deck *deck, int oldLength){
 	bool retVal = true; // declare return value, assign value to true
 	if((oldLength - deck->size()) != 1){ // oldLength used for compare
 		retVal = false; // change return value if the size of the new deck is not 1 less than the old size
-	}
-	return retVal; // return bool value of retVal
-}
-
-bool hand_lengthCheck(Hand *hand, int oldLength){
-	bool retVal = true; // declare return value, assign value to true
-	if((oldLength - hand->cardCount) != 1){ //oldLength used for compare
-		retVal = false; //change reutrn value if the size of the new hand is not 1 less than the old size
 	}
 	return retVal; // return bool value of retVal
 }
