@@ -3,12 +3,20 @@
 class Player{
   public:
     Player(int bankAmount);
+    Player(Player*);
 		Player();
     void addCard(Card*);
 		int getBank();
 		void updateBank(int);
-		//void bet(int);
-		//void insure();
+		void addBet(int);
+    int getBet();
+    void push();
+    void insure();
+    void winBet(double mult);
+    void winInsure();
+    void loseBet();
+    void printStatus();
+    void unsplit();
 
 		//Hand helper functions
 		void displayHand();
@@ -18,7 +26,8 @@ class Player{
 		void discard(int);
 		int getCardValue(int index);
 		Card* getCard(int index);
-
+  protected:
+    Player* parent = NULL;//used for keeping track of split hands
   private:
     Hand hand; //
     int bank;	//Used to hold amount of player money
