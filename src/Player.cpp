@@ -116,7 +116,7 @@ void Player::addBet(int amount){
 }
 
 void Player::winBet(double mult){
-  updateBank(floor(bet*mult));
+  updateBank(floor(bet*mult)+bet);
   bet = 0;
 }
 

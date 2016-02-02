@@ -33,16 +33,16 @@ int main(){
   
   q->push();
 
-  cout << "Player Q: \n";
+  cout << "push Player Q: \n";
   q->printStatus();
   cout << endl;
   q->addBet(15);
+  cout << "addbet 15 Player Q: \n";
+  q->printStatus();
 
   q->winBet(1.5);
-
-  cout << "Player Q: \n";
+  cout << "winbet(x1.5) Player Q: \n";
   q->printStatus();
-  cout << endl;
 
   q->unsplit(); 
   std::cout << "after unsplit\n";
