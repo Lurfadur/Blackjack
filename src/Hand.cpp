@@ -133,8 +133,10 @@ int Hand::getCardValue(int index){
 */
 Card* Hand::getCard(int index){
 	if(index < cards.size() && index >= 0){
-		return cards[index];
-	}else{
+    Card* givenCard = cards[index];
+	  cards.erase(cards.begin()+index);
+    return givenCard;
+  }else{
 		return NULL;
 	}
 }
