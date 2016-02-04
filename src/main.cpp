@@ -14,12 +14,11 @@ using namespace std;
 #define BLACKJACK 21 // Constant for the number for Blackjack
 
 // method to check bank amount when splitting that bank is >= to bet 
-bool hand_sumCheck(Hand *);
 bool deck_creationCheck(Deck *); // done
 bool deck_lengthCheck(Deck *, int oldLength); //done
 
 bool player_createCheck(Player *); // done
-bool player_checkTotals(Player *); // checks bank, insurance, and bet
+bool player_checkTotals(Player *); // NOT DONE checks bank, insurance, and bet
 
 /* Methods for controlling game*/
 
@@ -31,8 +30,12 @@ void deck_delete(vector<Deck *> &decks);
 void player_create(vector<Player *> &players); // done
 
 void deal(vector<Player *> players, vector<Deck *> &decks);
-bool check_victory(vector<Player *> players);
+bool check_victory(vector<Player *> players); // done
 void split(vector<Player *> &players, vector<Deck *> &decks);
+
+void display_hand(Player *);
+int player_choice(Player *);
+bool check_banks(vector<Player *> &players);
 
 
 int main(int argc, char **argv){
@@ -69,18 +72,99 @@ int main(int argc, char **argv){
 		decks[i]->shuffle();
 	}
 
-	/* Master loop to run the game, if check_victory is false then continue loop
+	/* Master loop to run the game
 	*
 	*/
-	while(!check_victory(players)){
-		
+	// deal initial cards
+
+	while (check_banks()){ // check if players are still in game
+		// ask each player bet, stand, or surrender if handSum() != BLACKJACK, exclude dealer
+		for (int i = 1; i < players.size(); i++){
+			if(players[i]->endRound){ // player is still playing this round
+				cout << "Player " << i << " hand" << endl;
+				display_hand(players[i]);
+				int playerInput = player_choice(players[i]);				
+			}
+			else{
+				cout << "Player " << i << " is out this turn." << endl;
+			}
+
+			
+		}
+		// deal cards
+		// check for insurance
+
+
 	}
-} //end main(
+} //end main
+
+// Method to display player options and get their choice
+int player_choice(Player *player){
+	cout << "Select: (1) Hit\n(2) Stand\n(3) Surrender" << endl;
+	
+}
+
+// Check to see if there are any remaining players able to play
+bool check_banks(vector<Player *> &players){
+	bool retVal = false; // assume no players are able to play
+	for (int i = 0; i < players.size(); i++){
+		if (players[i]->getBank() > 0){
+			retVal = true; // if player still has money in their bank, set to true
+		}
+	}
+	return retVal;
+}
+
+// Method to dispaly a player's hand
+void display_hand(Player *player){
+	player->displayHand();
+	cout << "Hand sum: " << player->getHandSum() << endl;
+	cout << "Card count: " << player->getHandCount() << endl;
+	cout << "Card values: ";
+	for(int i = 0; i < player->getHandCount(); i++){
+		cout << player->getCardValue(i) << " ";
+	}
+	cout << endl;
+}
+
+// Function to check victory conditions
+bool check_victory(vector<Player *> players){
+	bool retVal = false; // return value set to false by default
+
+	// If players and dealer have Blackjack, then push
+	// Dealer is players[0]
+	for(int i = 1; i < players.size(); i++){
+		if (players[0]->getHandSum() == BLACKJACK && players[i]->getHandSum() == BLACKJACK){
+			players[i]->push();
+			retVal = true;
+		}
+	}
+	if (retVal)
+		return retVal; // victory condition found, leave method
+
+	for(int i = 1; i < players.size(); i++){
+		// Player has Blackjack and dealer does not, player wins
+		if (players[i]->getHandSum() == BLACKJACK && players[0]->getHandSum() != BLACKJACK){
+			players[i]->winBet(1.5);
+			retVal = true;
+		}
+		// Player does not have Blackjack and dealer does, player loses bet
+		else if (players[i]->getHandSum() != BLACKJACK && players[0]->getHandSum() == BLACKJACK){
+			players[i]->loseBet();
+			retVal = true;
+		}
+	}
+	if (retVal)
+		return retVal; // victory condition found, leave method
+
+	/*If none of the above win conditions are found, return false*/
+	return retVal; // victory condition not found, leave method 
+}
 
 // Method to create a new player, checks if new worked correctly
 void player_create(vector<Player *> &players){
 	Player * newPlayer = new Player(); // Need to pass bank ammount, or default is 1000
-	if(newPlayer == NULL){ // error checking
+	if (newPlayer == NULL){ // error checking
 		cout << "ERROR: error in assigning memory to new Player, exiting program" << endl;
 		exit(1);
 	}
@@ -136,23 +220,6 @@ bool shuffle_check(vector<Player *> players, vector<Deck *> decks){
 	if(cardSum < formula){
 		retVal = true; // change return value if cardSum is less than formula, deck needs to be shuffled 
 	}	
-	return retVal; // return bool value of retVal
-}
-
-// Method to check if game loop should continue
-bool check_victory(vector<Player *> players){
-	bool retVal = true; // true to avoid infinite loop in main, change to fasle later ***********************
-	for(int i = 0; i < players.size(); i++){
-		if(players[i]->getHandSum() >= BLACKJACK){ // BLACKJACK used to compare hand sums of players
-			retVal = true; // victory condition found = Blackjack
-		}
-		
-	}
-	for(int i = 1; i < players.size(); i++){
-		if(players[i]->getBank() <= 0){
-			retVal = true; // victory condition found = bank is zero
-		}
-	}
 	return retVal; // return bool value of retVal
 }
 
