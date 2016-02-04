@@ -4,7 +4,7 @@
 
 int main(){
   
-  Deck newDeck;
+  Deck newDeck(3);
  
   std::cout << "Card Count: " << newDeck.size() << std::endl;
   std::cout << "Shuffling... " << std::endl;
@@ -13,6 +13,7 @@ int main(){
    std::cout << i << " ";
    Card* c = newDeck.getCard();
    c->display();
+   std::cout << std::endl;
    delete(c);
   }
   std::cout << "Card Count: " << newDeck.size() << std::endl;
