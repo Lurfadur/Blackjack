@@ -21,8 +21,11 @@ class Deck{
     * with each suit for numDecks decks
     */
     Deck(int numDecks);
-		
     
+    /* Deck destructor
+    * deletes any cards from the 
+    *deck
+    */
     ~Deck();
     
     /*Pushes a new Card onto the Deck
@@ -37,8 +40,17 @@ class Deck{
     */
     Card* getCard();
     
+    /*Size method for Deck
+    * returns an integer of the
+    *number of cards in the deck
+    */
     int size();
     
+    /*Deck shuffle method
+    * takes and returns nothing
+    * shuffles the deck with a random distribution
+    * based on the system time
+    */
     void shuffle();
 
   private:

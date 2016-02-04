@@ -195,27 +195,16 @@ Card* Deck::getCard(){
   return retCard; 
 }
 
-/*Gets the size of the deck, which is private
- * takes nothing
- * returns the size of Deck with an int
- */
 int Deck::size(){
   return cards.size();
 }
 
-/*Function to shuffle a Deck
- * takes nothing
- * returns nothing
- */
 void Deck::shuffle(){
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count(); //declare and assign seed variable
   auto engine = std::default_random_engine(seed); //make and assign engine, seed used here
   std::shuffle(cards.begin(), cards.end(), engine); // engine used here
 }
 
-/*Function to delete a Deck
- * takes nothing
- */
 Deck::~Deck(){
   for(int i=0; i<cards.size(); i++){
     delete(cards[i]);
