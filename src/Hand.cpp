@@ -30,10 +30,6 @@ bool discard_check(){
 void Hand::displayHand(){
 		for(int line = 0; line < 3; line++){
 			for(int i=0; i<cards.size(); i++){
-
-				/*Strings not needed?*/
-				//string s = cards[i]->getSuit();
-				//string f = cards[i]->getFace_value();
 				switch(line){
 					case 0:
 						cout << "----- ";
@@ -49,6 +45,31 @@ void Hand::displayHand(){
 			}
 		cout << endl;
 		}
+}
+
+void Hand::displayDealerHand(){
+		for(int line = 0; line < 3; line++){
+			for(int i=0; i<cards.size(); i++){
+				switch(line){
+					case 0:
+						cout << "----- ";
+						break;
+					case 1:
+						cout << "|";
+            if(i==0){
+              cout << "   ";
+            }else{
+						  cards[i]->display();
+            }
+						cout << "| ";
+						break;
+					case 2:
+						cout << "----- ";
+				}
+			}
+		cout << endl;
+		}
+
 }
 
 /*Get the number of cards in Hand, which is private

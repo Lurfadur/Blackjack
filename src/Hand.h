@@ -6,6 +6,7 @@ class Hand{
 		Hand();
 		~Hand();
     void displayHand();
+    void displayDealerHand();
     int cardCount();
     void addCard(Card*);
     void discard(Card*);
