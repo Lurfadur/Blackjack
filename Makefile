@@ -21,9 +21,10 @@ mainDeps := Card.o Deck.o Hand.o Player.o main.o
 cardTestDeps := Card.o Deck.o cardTest.o
 handTestDeps := Card.o Deck.o Player.o Hand.o handTest.o
 playerTestDeps := Card.o Deck.o Player.o Hand.o playerTest.o
+dealerTestDeps := Card.o Deck.o Player.o Hand.o Dealer.o dealerTest.o
 
-all: handTest cardTest playerTest main
-BIN := cardTest handTest playerTest main
+all: handTest cardTest playerTest dealerTest main
+BIN := cardTest handTest playerTest dealerTest main
 
 $(OBJS):
 	@echo "------------Compiling: " $@ "------------"
@@ -41,6 +42,11 @@ cardTest: $(cardTestDeps)
 	@echo ""
 
 playerTest: $(playerTestDeps)
+	@echo "------------Linking: " $@ "------------"
+	$(CXX) -o $@ $^ $(CXXTFLAGS)
+	@echo ""
+
+dealerTest: $(dealerTestDeps)
 	@echo "------------Linking: " $@ "------------"
 	$(CXX) -o $@ $^ $(CXXTFLAGS)
 	@echo ""
