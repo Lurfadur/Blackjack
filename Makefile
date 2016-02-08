@@ -17,7 +17,7 @@ SRCDIR := src
 SRCS := $(shell find $(SRCDIR) -name '*.$(SRCEXT)')
 OBJS = $(patsubst $(SRCDIR)/%.cpp,%.o,$(SRCS))
 
-mainDeps := Card.o Deck.o Hand.o Player.o main.o
+mainDeps := Card.o Deck.o Hand.o Player.o Dealer.o main.o
 cardTestDeps := Card.o Deck.o cardTest.o
 handTestDeps := Card.o Deck.o Player.o Hand.o handTest.o
 playerTestDeps := Card.o Deck.o Player.o Hand.o playerTest.o
