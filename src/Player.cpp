@@ -84,7 +84,7 @@ void Player::winInsure(){
 void Player::addBet(int amount){
     if(amount <= bank){
       if(amount >= 0){
-        bet = amount;
+        bet += amount;
         updateBank(amount * -1);
       }else{
         std::cout << "Bet cannot be negative\n";
