@@ -73,6 +73,12 @@ class Hand{
      * returns pointer to Card object
      */
     Card* getCard(int index);
+
+    /* returns a card's face value
+     *  takes an integer for position in hand
+     *  
+    */
+    std::string get_face_value(int);
     
   private:
     //accessed to hold cards and distribute cards on split

@@ -1,4 +1,7 @@
 #include "Hand.h"
+#include <string>
+
+using std::string;
 
 class Player{
   public:
@@ -139,6 +142,13 @@ class Player{
      * returns pointer of Card object
      */
     Card* getCard(int index);
+    
+
+    /* returns a card's face value
+     *  takes an integer for position in hand
+     *  
+    */
+    string get_face_value(int);
   
     bool inRound = true;//quick way to test if the player is in the round
   protected:

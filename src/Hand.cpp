@@ -145,3 +145,7 @@ Card* Hand::getCard(int index){
 		return NULL;
 	}
 }
+
+string Hand::get_face_value(int pos){
+  return cards[pos]->getFace_value(); 
+}

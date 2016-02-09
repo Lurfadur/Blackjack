@@ -4,6 +4,7 @@
 
 using std::cout;
 using std::endl;
+using std::string;
 
 Player::Player(int bankAmount){
   if(bankAmount < 0){
@@ -146,3 +147,6 @@ Card* Player::getCard(int index){
 	return hand.getCard(index);
 }
 
+string Player::get_face_value(int pos){
+  return hand.get_face_value(pos);
+}

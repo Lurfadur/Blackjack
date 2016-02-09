@@ -209,7 +209,7 @@ int player_choice(Player *player, Dealer *dealer){
 			validChoices.push_back(4);
 		}
 
-		if (player->getHandCount() == 2 && player->getCard(0)->getFace_value() == player->getCard(1)->getFace_value()){ // player has option to split
+		if (player->getHandCount() == 2 && player->get_face_value(0) == player->get_face_value(1)){ // player has option to split
 			cout << ", (5) Split";
 			validChoices.push_back(5);
 		} 
