@@ -53,8 +53,16 @@ class Deck{
     */
     void shuffle();
 
+    /*Reshuffle deck
+    * gets rid of any current cards
+    * creanet N decks
+    */
+    void reshuffle(int N);
+
   private:
     std::vector<Card*> cards; //accessed to distribute cards.
+    //card creation used by constructors
+    void createCards(int numDecks);
 
 };
 

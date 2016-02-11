@@ -17,5 +17,8 @@ int main(){
    delete(c);
   }
   std::cout << "Card Count: " << newDeck.size() << std::endl;
+  newDeck.reshuffle(3);
+  std::cout << newDeck.size() << std::endl;
+
   return 0;
 }
