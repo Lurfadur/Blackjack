@@ -1,10 +1,7 @@
 // Main file for Blackjack
 #include "Deck.h"
 #include "Dealer.h"
-#include <iostream>
-#include <algorithm> // std::random_shuffle
-#include <random> // std::default_random_engine
-#include <chrono> // std::chrono::system_clock
+//#include <iostream>
 using namespace std;
 
 /* Methods for testing and checking*/
@@ -14,25 +11,24 @@ using namespace std;
 #define DEALER_HIT 16 // Constant for when the dealer must hit
 
 // method to check bank amount when splitting that bank is >= to bet 
-bool deck_creationCheck(Deck *); // done
-bool deck_lengthCheck(Deck *, int oldLength); //done
+//bool deck_creationCheck(Deck *); // done
+bool deck_lengthCheck(Deck &, int oldLength); //done
 
 bool player_createCheck(Player *); // done
-bool player_checkTotals(Player *); // NOT DONE checks bank, insurance, and bet
+//bool player_checkTotals(Player *); // NOT DONE checks bank, insurance, and bet
 
 /* Methods for controlling game*/
-void hit(Player *player, vector<Deck *> &decks); // done
-bool shuffle_check(vector<Player *> &players, vector<Deck *> &decks); // done
+void hit(Player *player, Deck &); // done
+bool shuffle_check(vector<Player *> &players, Deck &); // done
 
-void deck_create(vector<Deck *> &decks); // done
+//void deck_create(vector<Deck *> &decks); // done
 void player_create(vector<Player *> &players); // done
 
-//void deal(vector<Player *> players, vector<Deck *> &decks);
 void check_victory(vector<Player *> &players, Dealer *); // done
-void split(vector<Player *> &players, vector<Deck *> &decks);
+void split(vector<Player *> &players, Deck &);
 void player_surrender(Player *); // done
-void player_doubleDown(Player *, vector<Deck *> &decks); // done
-void player_split(vector<Player *> &players, Player *, vector<Deck *> &decks); // done
+void player_doubleDown(Player *, Deck &); // done
+void player_split(vector<Player *> &players, Player *, Deck &); // done
 
 int player_choice(Player *, Dealer *); // done
 bool check_banks(vector<Player *> &players); // done
@@ -41,36 +37,41 @@ int main(int argc, char **argv){
 	
 	// Variable and vector declaration and assignment
 	vector<Player *> players;
-	vector<Deck *> decks; // in future, use multideck creation built in to Deck class
-
+	//vector<Deck *> decks; // in future, use multideck creation built in to Deck class
+	
 	Dealer *dealer = new Dealer();
 	if (dealer == NULL){ // check dealer for NULL value
 		cout << "ERROR: error in dealer creation, exiting program" << endl;
 		exit(1);
 	}
+	
 	int playerCount = 1; // update to get number of players from argv, set to 1 for default
+	Deck decks(playerCount + 1);
 
 	// Deck and Player creation
 	for (int i = 0; i < playerCount; i++){ // playerCount used for loop bounds
 		player_create(players); // players vector used 
-		deck_create(decks); // decks vector used
+		//deck_create(decks); // decks vector used
 		
 		if (!player_createCheck(players[i])){
 			cout << "ERROR: error in player creation, exiting program" << endl;
 			exit(1);
 		}
 
+		/*
 		if (!deck_creationCheck(decks[i])){
 			cout << "ERROR: error in deck creation, exiting program" << endl;
 			exit(1);
 		}
-
+		*/
 	}
 
-	/*shuffle the decks*/
+	/*shuffle the decks
 	for (int i = 0; i < decks.size(); i++){
 		decks[i]->shuffle();
 	}
+	*/
+	mainDeck.shuffle();
 
 	/* Master loop to run the game
 	*/
@@ -82,24 +83,13 @@ int main(int argc, char **argv){
 
 		// check to see if decks need to be remade
 		if (shuffle_check(players, decks)){
-			for (int i = 0; i < decks.size(); i++){
-				delete(decks[i]);
-			}
-			for (int i = 0; i < decks.size(); i++){
-				decks.pop_back();
-			}
-			for (int i = 0; i < playerCount; i++){
-				deck_create(decks);
-			}
-			for (int i = 0; i < decks.size(); i++){
-				decks[i]->shuffle();
-			}
+			decks.reshuffle(playerCount + 1);
 			cout << "Remaking the decks..." << endl;
 		}
 
 		// dealer gets 2 cards
-		dealer->addCard(decks.back()->getCard());
-		dealer->addCard(decks.back()->getCard());
+		dealer->addCard(decks.getCard());
+		dealer->addCard(decks.getCard());
 
 		// ask players to bet, deal 2 cards to each
 		for (int i = 0; i < players.size(); i++){	
@@ -122,8 +112,8 @@ int main(int argc, char **argv){
 			}
 
 			// add 2 cards to player's hand
-			players[i]->addCard(decks.back()->getCard()); 
-			players[i]->addCard(decks.back()->getCard());
+			players[i]->addCard(decks.getCard()); 
+			players[i]->addCard(decks.getCard());
 		}
 		cout << "Dealer's hand:" << endl;
 		dealer->displayHand(); // dealer reveals top card
@@ -197,7 +187,7 @@ int main(int argc, char **argv){
 		dealer->revealHand();
 		while (dealer->getHandSum() != BLACKJACK && dealer->getHandSum() <= DEALER_HIT && playerInput != 0){ // constant used here
 			// while dealer's hand is <= to 16, keep hitting
-			dealer->addCard(decks.back()->getCard());
+			dealer->addCard(decks.getCard());
 			cout << "Dealer is hitting..." << endl;
 			dealer->revealHand();
 		}
@@ -228,9 +218,6 @@ int main(int argc, char **argv){
 	// Do memory cleanup
 	for (int i = 0; i < players.size(); i++){
 		delete(players[i]);
-	}
-	for (int i = 0; i < decks.size(); i++){
-		delete(decks[i]);
 	}
 	delete(dealer);
 } //end main
@@ -303,18 +290,18 @@ void player_surrender(Player *player){
 	player->inRound = false; // flip the inRound bool for the player
 }
 
-void player_split(vector<Player *> &players, Player *player, vector<Deck *> &decks){
+void player_split(vector<Player *> &players, Player *player, Deck &decks){
 	Player *splitPlayer = new Player(player); // create a "new" player, give new player one of the pairs from parent player
-	splitPlayer->addCard(decks.back()->getCard()); // give new player an extra card
+	splitPlayer->addCard(decks.getCard()); // give new player an extra card
 
 	players.push_back(splitPlayer); // push child onto vector
-	player->addCard(decks.back()->getCard()); // give parent player an extra card
+	player->addCard(decks.getCard()); // give parent player an extra card
 }
 
 // Gets the last card in the last deck for a player
-void hit(Player *player, vector<Deck *> &decks){
+void hit(Player *player, Deck &decks){
 	
-	player->addCard(decks.back()->getCard()); // add card to player hand
+	player->addCard(decks.getCard()); // add card to player hand
 	cout << "Player's sum: " << player->getHandSum() << endl;
 	
 	while (true){	
@@ -328,7 +315,7 @@ void hit(Player *player, vector<Deck *> &decks){
 
 			// if user selected to hit, deal another card and go back to the while loop, otherwise return
 			if (hitAgain.compare("y") == 0 || hitAgain.compare("Y") == 0){
-				player->addCard(decks.back()->getCard());
+				player->addCard(decks.getCard());
 			}
 			else if (hitAgain.compare("n") == 0 || hitAgain.compare("N") == 0){
 				return;
@@ -351,10 +338,10 @@ void hit(Player *player, vector<Deck *> &decks){
 }
 
 // Player doubles bet and is dealt one more card for round
-void player_doubleDown(Player *player, vector<Deck *> &decks){
+void player_doubleDown(Player *player, Deck &decks){
 	int playerBet = player->getBet(); // playerBet variable declared and initialized
 	player->addBet(playerBet); // playerBet used to change value in player
-	player->addCard(decks.back()->getCard());
+	player->addCard(decks.getCard());
 }
 
 // Function to check victory conditions
@@ -406,15 +393,20 @@ void player_create(vector<Player *> &players){
 	players.push_back(newPlayer);
 }
 
-// Method to create a new deck, checks if new worked correctly
+/* Method to create a new deck, checks if new worked correctly
 void deck_create(vector<Deck *> &decks){
-	Deck * newDeck = new Deck(); // create a new Deck object
+
+	//Deck * newDeck = new Deck(); // create a new Deck object
+	
 	if(newDeck == NULL){ // error checking 
 		cout << "ERROR: error in assigning memory to new Deck, exiting program" << endl;
 		exit(1);
 	}
+	
 	decks.push_back(newDeck);
 }
+*/
+
 
 // Check to see if player has been created correctly
 bool player_createCheck(Player *player){
@@ -426,6 +418,7 @@ bool player_createCheck(Player *player){
 }
 
 // Checks to see if a deck has 52 cards in it
+/*
 bool deck_creationCheck(Deck *deck){
 	bool retVal = true; // declare return value, assign value to true
 	if(deck->size() != NUM_CARDS){
@@ -433,6 +426,7 @@ bool deck_creationCheck(Deck *deck){
 	}
 	return retVal; // return bool value of retVal
 }
+*/
 
 // Checks if deck length is one less after deal
 bool deck_lengthCheck(Deck *deck, int oldLength){
@@ -444,15 +438,17 @@ bool deck_lengthCheck(Deck *deck, int oldLength){
 }
 
 // Method to check if decks to need to be remade and shuffled
-bool shuffle_check(vector<Player *> &players, vector<Deck *> &decks){
+bool shuffle_check(vector<Player *> &players, Deck &decks){
 
 	// Formula: (28 * decks.size()) * (players.size() - 1)	
 	bool retVal = false; // declare return value, assign value to false
 	int formula = (28 * decks.size()) * (players.size()); // int formula uses deck.size() and players.size() values
-	int cardSum = 0; // declare and assign cardSum
+	int cardSum = decks.size(); // declare and assign cardSum
+	/*
 	for (int i = 0; i < decks.size(); i++){
 		cardSum += decks[i]->size(); // cardSum value changed
 	}
+	*/
 	if (cardSum < formula){
 		retVal = true; // change return value if cardSum is less than formula, deck needs to be shuffled 
 	}	
