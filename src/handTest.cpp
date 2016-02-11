@@ -40,7 +40,7 @@ int main(){
 	Player* player2 = new Player();
 
 	//create deck and shuffle
-	Deck deck;
+	Deck deck(3);
 	deck.shuffle();
 
 	//Deal palyer2 numDealCards cards
