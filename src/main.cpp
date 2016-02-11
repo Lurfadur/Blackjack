@@ -34,11 +34,7 @@ int player_choice(Player *, Dealer *); // done
 bool check_banks(vector<Player *> &players); // done
 
 int main(int argc, char **argv){
-	
-	// Variable and vector declaration and assignment
-	vector<Player *> players;
-	//vector<Deck *> decks; // in future, use multideck creation built in to Deck class
-	
+
 	Dealer *dealer = new Dealer();
 	if (dealer == NULL){ // check dealer for NULL value
 		cout << "ERROR: error in dealer creation, exiting program" << endl;
@@ -46,6 +42,7 @@ int main(int argc, char **argv){
 	}
 	
 	int playerCount = 1; // update to get number of players from argv, set to 1 for default
+	vector<Player *> players;
 	Deck decks(playerCount + 1);
 
 	// Deck and Player creation
