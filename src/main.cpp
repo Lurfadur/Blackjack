@@ -27,6 +27,8 @@ void player_split(vector<Player *> &players, Player *, Deck &); // done
 int player_choice(Player *, Dealer *); // done
 bool check_banks(vector<Player *> &players); // done
 
+void offer_advice(Dealer *);
+
 int main(int argc, char **argv){
 
 	Dealer *dealer = new Dealer();
@@ -107,6 +109,27 @@ int main(int argc, char **argv){
 			players[i]->printStatus(); // show player's their hand
 			cout << endl << endl;
 			bool splitCheck = true; // bool value for split detection
+
+			cout << "Would you like some advice? (y/n): ";
+			string advice;
+			cin >> advice;
+			
+			// if user wants help, 
+			bool help_while = true; // used for loop break
+			while(help_while){
+				if (advice.compare("y") == 0 || advice.compare("Y") == 0){
+					// offer advice
+				}
+				else if (advice.compare("n") == 0 || advice.compare("N") == 0){
+					cout << "Player " << i + 1 << " does not want advice." << endl;
+					help_while = false; // break loop
+				}
+				else{
+					cout << "Input not recognized, try again" << endl;
+				}
+			} // end while-loop
+		}// end for-loop
+
 		
 			while (splitCheck){
 
@@ -203,6 +226,35 @@ int main(int argc, char **argv){
 	}
 	delete(dealer);
 } //end main
+
+void offer_advice(Dealer *dealer){
+	string dealerTop = dealer->get_face_value(1); // assign dealerTop to the face value of dealer's top card
+	
+	if (strcmp(dealerTop, "A") == 0){ // top card is Ace
+		cout << "Extreme danger, a loss is likely." << endl;
+	}
+	else if (strcmp(dealerTop, "K") == 0 ||
+			strcmp(dealerTop, "Q") == 0 ||
+			strcmp(dealerTop, "J") == 0 ||
+			strcmp(dealerTop, "10") == 0){
+		cout << "Big trouble! You'll be lucky to push." << endl;
+	}
+	else if (strcmp(dealerTop, "9") == 0){
+		cout << "You're a little uptight and maybe in trouble." << endl;
+	}
+	else if (strcmp(dealerTop, "8") == 0 || 
+			strcmp(dealerTop, "7") == 0){
+		cout << "Breathe a little easier. The dealer is beatable." << endl;
+	}
+	else if (strcmp(dealerTop, "6") == 0 ||
+			strcmp(dealerTop, "5") == 0 ||
+			strcmp(dealerTop, "4") == 0){
+		cout << "Looking good. You are in the driver's seat." << endl;
+	}
+	else{
+		cout << "Wait and see. Be casutios." << endl;
+	}
+}
 
 // Method to display player options and get their choice
 int player_choice(Player *player, Dealer *dealer){
@@ -377,7 +429,7 @@ void player_create(vector<Player *> &players){
 // Check to see if player has been created correctly
 bool player_createCheck(Player *player){
 	bool retVal = true; // declare return value, assign value to true
-	if(player->getBank() <= 0){
+	if (player->getBank() <= 0){
 		retVal = false; // change return value to false if player's bank is less than or equal to 0
 	}
 	return retVal; // return bool value of retVal
