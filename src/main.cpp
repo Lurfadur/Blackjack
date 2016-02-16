@@ -10,18 +10,12 @@ using namespace std;
 #define SURRENDER_AMOUNT 0.5 // Constant for the amount to be multiplied to the player's bet when doing a surrender
 #define DEALER_HIT 16 // Constant for when the dealer must hit
 
-// method to check bank amount when splitting that bank is >= to bet 
-//bool deck_creationCheck(Deck *); // done
-bool deck_lengthCheck(Deck &, int oldLength); //done
-
 bool player_createCheck(Player *); // done
-//bool player_checkTotals(Player *); // NOT DONE checks bank, insurance, and bet
 
 /* Methods for controlling game*/
 void hit(Player *player, Deck &); // done
-bool shuffle_check(vector<Player *> &players, Deck &); // done
+bool shuffle_check(vector<Player *> &players, Deck &, int); // done
 
-//void deck_create(vector<Deck *> &decks); // done
 void player_create(vector<Player *> &players); // done
 
 void check_victory(vector<Player *> &players, Dealer *); // done
@@ -42,44 +36,33 @@ int main(int argc, char **argv){
 	}
 	
 	int playerCount = 1; // update to get number of players from argv, set to 1 for default
+	int numDecks = 2;
 	vector<Player *> players;
 	Deck decks(playerCount + 1);
 
 	// Deck and Player creation
 	for (int i = 0; i < playerCount; i++){ // playerCount used for loop bounds
 		player_create(players); // players vector used 
-		//deck_create(decks); // decks vector used
 		
 		if (!player_createCheck(players[i])){
 			cout << "ERROR: error in player creation, exiting program" << endl;
 			exit(1);
 		}
-
-		/*
-		if (!deck_creationCheck(decks[i])){
-			cout << "ERROR: error in deck creation, exiting program" << endl;
-			exit(1);
-		}
-		*/
 	}
 
-	/*shuffle the decks
-	for (int i = 0; i < decks.size(); i++){
-		decks[i]->shuffle();
-	}
-	*/
-	mainDeck.shuffle();
+	decks.shuffle(); // shuffle the decks
 
 	/* Master loop to run the game
 	*/
 	cout << endl << "Welcome to K&G Blackjack!" << endl << "Press CTRL + C to quit the game." << endl;
 	int roundNumber = 1; // number of rounds played
+	
 	while (check_banks(players)){ // check if players are still in game
 		cout << "Round number: " << roundNumber << endl;
 		roundNumber++; // increment roundNumber by 1
 
 		// check to see if decks need to be remade
-		if (shuffle_check(players, decks)){
+		if (shuffle_check(players, decks, numDecks)){
 			decks.reshuffle(playerCount + 1);
 			cout << "Remaking the decks..." << endl;
 		}
@@ -93,7 +76,7 @@ int main(int argc, char **argv){
 			bool loopBreak = false; // bool used to break while-loop
 			while (!loopBreak){
 				cout << "Place a bet between 1 and " << players[i]->getBank() << ": ";
-				int betAmount; // int amount for player bet
+				int betAmount = 0; // int amount for player bet
 				cin >> betAmount;
 
 				if (betAmount <= players[i]->getBank() && betAmount > 0 && cin){
@@ -179,17 +162,19 @@ int main(int argc, char **argv){
 			}
 			
 		}
+
 		// do dealer AI here
 		cout << "Dealer's hand:" << endl;
 		dealer->revealHand();
 		while (dealer->getHandSum() != BLACKJACK && dealer->getHandSum() <= DEALER_HIT && playerInput != 0){ // constant used here
+			
 			// while dealer's hand is <= to 16, keep hitting
 			dealer->addCard(decks.getCard());
 			cout << "Dealer is hitting..." << endl;
 			dealer->revealHand();
 		}
-		cout << "Dealer's hand is: " << dealer->getHandSum() << endl;
 		
+		cout << "Dealer's hand is: " << dealer->getHandSum() << endl;
 		// display player hands
 		for (int i = 0; i < players.size(); i++){
 			cout << "Player " << i + 1 << " hand is: " << players[i]->getHandSum() << endl;
@@ -220,11 +205,10 @@ int main(int argc, char **argv){
 } //end main
 
 // Method to display player options and get their choice
-/*Needs to be checked and tested!!!*/
 int player_choice(Player *player, Dealer *dealer){
 
 	bool stopLoop = false; // bool to control user input loop
-	int userIn; // value entered in by user
+	int userIn = 0; // value entered in by user
 	vector<int> validChoices = {1, 2}; // vector containing valid number choices for player
 
 	while (!stopLoop){	
@@ -390,21 +374,6 @@ void player_create(vector<Player *> &players){
 	players.push_back(newPlayer);
 }
 
-/* Method to create a new deck, checks if new worked correctly
-void deck_create(vector<Deck *> &decks){
-
-	//Deck * newDeck = new Deck(); // create a new Deck object
-	
-	if(newDeck == NULL){ // error checking 
-		cout << "ERROR: error in assigning memory to new Deck, exiting program" << endl;
-		exit(1);
-	}
-	
-	decks.push_back(newDeck);
-}
-*/
-
-
 // Check to see if player has been created correctly
 bool player_createCheck(Player *player){
 	bool retVal = true; // declare return value, assign value to true
@@ -414,41 +383,15 @@ bool player_createCheck(Player *player){
 	return retVal; // return bool value of retVal
 }
 
-// Checks to see if a deck has 52 cards in it
-/*
-bool deck_creationCheck(Deck *deck){
-	bool retVal = true; // declare return value, assign value to true
-	if(deck->size() != NUM_CARDS){
-		retVal = false; // change return value if the number of cards in a deck is not equal to NUM_CARDS (52)
-	}
-	return retVal; // return bool value of retVal
-}
-*/
-
-// Checks if deck length is one less after deal
-bool deck_lengthCheck(Deck *deck, int oldLength){
-	bool retVal = true; // declare return value, assign value to true
-	if((oldLength - deck->size()) != 1){ // oldLength used for compare
-		retVal = false; // change return value if the size of the new deck is not 1 less than the old size
-	}
-	return retVal; // return bool value of retVal
-}
-
 // Method to check if decks to need to be remade and shuffled
-bool shuffle_check(vector<Player *> &players, Deck &decks){
+bool shuffle_check(vector<Player *> &players, Deck &decks, int numDecks){
 
 	// Formula: (28 * decks.size()) * (players.size() - 1)	
 	bool retVal = false; // declare return value, assign value to false
-	int formula = (28 * decks.size()) * (players.size()); // int formula uses deck.size() and players.size() values
-	int cardSum = decks.size(); // declare and assign cardSum
-	/*
-	for (int i = 0; i < decks.size(); i++){
-		cardSum += decks[i]->size(); // cardSum value changed
-	}
-	*/
-	if (cardSum < formula){
+	int formula = (28 * numDecks) * (players.size()); // int formula uses deck.size() and players.size() values
+
+	if (decks.size() <= formula){
 		retVal = true; // change return value if cardSum is less than formula, deck needs to be shuffled 
 	}	
-	cout << "SHUFFL_CHECK RETURNS: " << retVal << endl;
 	return retVal; // return bool value of retVal
 }

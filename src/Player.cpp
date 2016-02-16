@@ -7,7 +7,7 @@ using std::endl;
 using std::string;
 
 Player::Player(int bankAmount){
-  if(bankAmount < 0){
+  if (bankAmount < 0){
     bankAmount *= -1;
   }
   bank = bankAmount;
@@ -21,9 +21,10 @@ Player::Player(Player* pPlayer){
   bank = 0;
   sideBet = 0;
   inRound = true;
-  if(pPlayer->parent == NULL){
+  if (pPlayer->parent == NULL){
     parent = pPlayer;
-  }else{
+  }
+  else{
     parent = pPlayer->parent;
   }
   
@@ -33,7 +34,7 @@ Player::Player(Player* pPlayer){
   pPlayer->updateBank(bet * -1);
   
   //get card from parent
-  if(pPlayer->getHandCount() != 0){
+  if (pPlayer->getHandCount() != 0){
     hand.addCard(pPlayer->getCard(0));
   }
 }
@@ -46,7 +47,7 @@ Player::Player(){
 }
 
 void Player::unsplit(){
-  if(parent != NULL){
+  if (parent != NULL){
     //add child bank back to parent
     parent->updateBank(getBank());
     //erase child player bank
@@ -70,7 +71,8 @@ void Player::insure(){
   if (bank >= floor(bet/2)){
     sideBet = floor(bet/2);
     updateBank(sideBet*-1);
-  }else{
+  }
+  else{
     cout << "Not enough bank to insure" << endl;
   }
 }
@@ -82,16 +84,18 @@ void Player::winInsure(){
 }
 
 void Player::addBet(int amount){
-    if(amount <= bank){
-      if(amount >= 0){
-        bet += amount;
-        updateBank(amount * -1);
-      }else{
-        std::cout << "Bet cannot be negative\n";
-      }
-    }else{
-      std::cout << "Bet excedes bank\n";
-    }
+  if (amount <= bank){
+     if (amount >= 0){
+       bet += amount;
+       updateBank(amount * -1);
+     }
+     else{
+       std::cout << "Bet cannot be negative\n";
+     }
+   }
+   else{
+     std::cout << "Bet excedes bank\n";
+   }
 }
 
 void Player::winBet(double mult){

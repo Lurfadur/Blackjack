@@ -9,18 +9,16 @@ Deck::Deck(){
   createCards(1);
 }
 
-
-
 Deck::Deck(int numDecks){
     createCards(numDecks);
 }
 
 void Deck::createCards(int numDecks){
-  for(int h=1; h<=numDecks; h++){
-    for(int i=0; i<4; i++){
-      for(int j=0; j<13; j++){
+  for (int h=1; h<=numDecks; h++){
+    for (int i=0; i<4; i++){
+      for (int j=0; j<13; j++){
         std::string newSuit; //declare newSuit
-        switch(i){
+        switch (i){
           case 0: newSuit = u8"♠"; //newSuit used on next 8 lines
                   break;
           case 1: newSuit = u8"♥";
@@ -32,9 +30,9 @@ void Deck::createCards(int numDecks){
           default: newSuit = "E";
         }
 
-        int newValue; //declare newVlaue, used in switch cases
+        int newValue = 0; //declare newVlaue, used in switch cases
         std::string newFValue; //declare newFVlaue, used in switch cases
-        switch(j){
+        switch (j){
           case 0:
             newValue = 11;
             newFValue = "A";
@@ -125,9 +123,8 @@ void Deck::shuffle(){
   std::shuffle(cards.begin(), cards.end(), engine); // engine used here
 }
 
-
 void Deck::reshuffle(int N){
-  for(int i=0; i<cards.size(); i++){
+  for (int i=0; i<cards.size(); i++){
     delete(cards[i]);
   }
   createCards(N);
@@ -135,7 +132,7 @@ void Deck::reshuffle(int N){
 }
 
 Deck::~Deck(){
-  for(int i=0; i<cards.size(); i++){
+  for (int i=0; i<cards.size(); i++){
     delete(cards[i]);
   }
 }
