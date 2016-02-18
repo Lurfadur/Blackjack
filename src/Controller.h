@@ -17,25 +17,25 @@ using std::cin;
 void offer_advice(Dealer *dealer){
 	string dealerTop = dealer->get_face_value(1); // assign dealerTop to the face value of dealer's top card
 	
-	if (strcmp(dealerTop, "A") == 0){ // top card is Ace
+	if (dealerTop.compare("A") == 0){ // top card is Ace
 		cout << "Extreme danger, a loss is likely." << endl;
 	}
-	else if (strcmp(dealerTop, "K") == 0 ||
-			strcmp(dealerTop, "Q") == 0 ||
-			strcmp(dealerTop, "J") == 0 ||
-			strcmp(dealerTop, "10") == 0){
+	else if (dealerTop.compare("K") == 0 ||
+			dealerTop.compare("Q") == 0 ||
+			dealerTop.compare("J") == 0 ||
+			dealerTop.compare("10") == 0){
 		cout << "Big trouble! You'll be lucky to push." << endl;
 	}
-	else if (strcmp(dealerTop, "9") == 0){
+	else if (dealerTop.compare("9") == 0){
 		cout << "You're a little uptight and maybe in trouble." << endl;
 	}
-	else if (strcmp(dealerTop, "8") == 0 || 
-			strcmp(dealerTop, "7") == 0){
+	else if (dealerTop.compare("8") == 0 || 
+			dealerTop.compare("7") == 0){
 		cout << "Breathe a little easier. The dealer is beatable." << endl;
 	}
-	else if (strcmp(dealerTop, "6") == 0 ||
-			strcmp(dealerTop, "5") == 0 ||
-			strcmp(dealerTop, "4") == 0){
+	else if (dealerTop.compare("6") == 0 ||
+			dealerTop.compare("5") == 0 ||
+			dealerTop.compare("4") == 0){
 		cout << "Looking good. You are in the driver's seat." << endl;
 	}
 	else{
