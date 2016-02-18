@@ -2,6 +2,7 @@
 #include "Dealer.h"
 #include <string.h>
 #include <vector>
+#include <unistd.h>
 
 using std::cout;
 using std::endl;
@@ -43,6 +44,21 @@ void offer_advice(Dealer *dealer){
 	}
 }
 
+void display_wait(int loops){
+	cout << "Thinking ";
+  cout << "-" << std::flush;
+  for(int i = 0; i < loops; i++){
+    sleep(1);
+    cout << "\b\\" << std::flush;
+    sleep(1);
+    cout << "\b|" << std::flush;
+    sleep(1);
+    cout << "\b/" << std::flush;
+    sleep(1);
+    cout << "\b-" << std::flush;
+
+  }	
+}
 
 // Method to display player options and get their choice
 int player_choice(Player *player, Dealer *dealer){
