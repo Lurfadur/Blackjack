@@ -39,7 +39,7 @@ void offer_advice(Dealer *dealer){
 		cout << "Looking good. You are in the driver's seat." << endl;
 	}
 	else{
-		cout << "Wait and see. Be casutios." << endl;
+		cout << "Wait and see. Be cautious." << endl;
 	}
 }
 

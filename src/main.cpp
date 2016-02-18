@@ -118,13 +118,16 @@ int main(int argc, char **argv){
       while(help_while){
         if (advice.compare("y") == 0 
             || advice.compare("Y") == 0){
-          // offer advice
-        }else if (advice.compare("n") == 0 
+              offer_advice(dealer);
+              help_while = false;
+        }
+        else if (advice.compare("n") == 0 
             || advice.compare("N") == 0){
           cout << "Player " << i + 1 
             << " does not want advice." << endl;
           help_while = false; // break loop
-        }else{
+        }
+        else{
           cout << "Input not recognized, try again" << endl;
         }
       } // end while-loop
@@ -191,7 +194,7 @@ int main(int argc, char **argv){
     }
 
     }// end for-loop
-  }
+  //}
 
   // do dealer AI here
   cout << "Dealer's hand:" << endl;
@@ -230,7 +233,7 @@ int main(int argc, char **argv){
 
   cout << "========================================================" << endl;
 
-  //} // end of game
+  } // end of game
   cout << "None of the remaining players have "
   << "enough bank left to bet with." 
   << endl << "Thanks for playing!" << endl;
