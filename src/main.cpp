@@ -32,8 +32,8 @@ int main(int argc, char **argv){
   }
 
   decks.shuffle(); // shuffle the decks
-
-  cout << endl << "Welcome to K&G Blackjack!" 
+  cout << "\033[2J\033[1;1H"; // clear screen
+  cout <<"Welcome to K&G Blackjack!" 
     << endl << "Press CTRL + C to quit the game." << endl;
 
   int roundNumber = 1; // number of rounds played
@@ -189,9 +189,9 @@ int main(int argc, char **argv){
           break;
       }					
     }
-
+    display_wait(1);
     }// end for-loop
-  }
+  
 
   // do dealer AI here
   cout << "Dealer's hand:" << endl;
@@ -199,7 +199,8 @@ int main(int argc, char **argv){
   while ( dealer->getHandSum() != BLACKJACK 
       && dealer->getHandSum() <= DEALER_HIT 
       && playerInput != 0){
-
+    cout << endl;
+    display_wait(1);
     // while dealer's hand is <= to 16, keep hitting
     dealer->addCard(decks.getCard());
     cout << "Dealer is hitting..." << endl;
@@ -228,9 +229,11 @@ int main(int argc, char **argv){
     }
   }
 
-  cout << "========================================================" << endl;
+  display_wait(3);
+  // clear screen
+  cout << "\033[2J\033[1;1H";
 
-  //} // end of game
+  } // end of game
   cout << "None of the remaining players have "
   << "enough bank left to bet with." 
   << endl << "Thanks for playing!" << endl;
