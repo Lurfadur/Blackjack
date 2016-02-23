@@ -2,11 +2,11 @@
 #include <iostream>
 
 Dealer::Dealer(){
-  parent = NULL;
+    parent = NULL;
 }
 void Dealer::displayHand(){
-  hand.displayDealerHand();
+    hand.displayDealerHand();
 }
 void Dealer::revealHand(){
-  hand.displayHand();
+    hand.displayHand();
 }
