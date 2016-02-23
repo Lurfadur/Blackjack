@@ -194,20 +194,18 @@ int main(int argc, char **argv){
     }
     display_wait(1);
     }// end for-loop
-<<<<<<< HEAD
   //}
-=======
-  
->>>>>>> v2
+
 
   // do dealer AI here
-  cout << "Dealer's hand:" << endl;
+  cout << endl << "Dealer's hand:" << endl;
   dealer->revealHand();
   while ( dealer->getHandSum() != BLACKJACK 
       && dealer->getHandSum() <= DEALER_HIT 
       && playerInput != 0){
     cout << endl;
     display_wait(1);
+    cout << "\033[2J\033[1;1H";
     // while dealer's hand is <= to 16, keep hitting
     dealer->addCard(decks.getCard());
     cout << "Dealer is hitting..." << endl;
@@ -236,7 +234,7 @@ int main(int argc, char **argv){
     }
   }
 
-  display_wait(3);
+  display_wait(2);
   // clear screen
   cout << "\033[2J\033[1;1H";
 
