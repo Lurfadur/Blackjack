@@ -2,20 +2,20 @@
 #include "Deck.h"
 
 int main(){
-  Dealer* d = new Dealer();
-  Deck newDeck;
-                                                              
-  std::cout << "Card Count: " << newDeck.size() << std::endl;
-  std::cout << "Shuffling... " << std::endl;
-  newDeck.shuffle();
+    Dealer* d = new Dealer();
+    Deck newDeck;
 
-  d->addCard(newDeck.getCard());
-  d->addCard(newDeck.getCard());
-  d->addCard(newDeck.getCard());
+    std::cout << "Card Count: " << newDeck.size() << std::endl;
+    std::cout << "Shuffling... " << std::endl;
+    newDeck.shuffle();
 
-  d->displayHand();
+    d->addCard(newDeck.getCard());
+    d->addCard(newDeck.getCard());
+    d->addCard(newDeck.getCard());
 
-  d->revealHand();
-  std::cout << "Hand sum: " << d->getHandSum() << std::endl;
+    d->displayHand();
+
+    d->revealHand();
+    std::cout << "Hand sum: " << d->getHandSum() << std::endl;
 
 }
