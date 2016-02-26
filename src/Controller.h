@@ -10,6 +10,10 @@ using std::vector;
 using std::cin;
 
 /* Methods for testing and checking*/
+#define MAX_PLAYERS 10
+#define MIN_PLAYERS 1
+#define MIN_DECKS 1
+#define MAX_DECKS 10
 #define NUM_CARDS 52 // Constant for the number of cards in a deck
 #define BLACKJACK 21 // Constant for the number for Blackjack
 #define SURRENDER_AMOUNT 0.5 // Constant for the amount to be multiplied to the player's bet when doing a surrender
@@ -68,28 +72,31 @@ int player_choice(Player *player, Dealer *dealer){
     vector<int> validChoices = {1, 2}; // vector containing valid number choices for player
 
     while (!stopLoop){	
-        cout << "Select: (1) Hit, (2) Stand"; // default choices
+        cout << "Select: [1] Hit, [2] Stand"; // default choices
 
         if (dealer->getHandSum() != BLACKJACK){
-            cout << ", (3) Surrender";
+            cout << ", [3] Surrender";
             validChoices.push_back(3);
         }
 
         if (player->getBank() >= player->getBet()){ // player has option to double down
-            cout <<", (4) Double Down";
+            cout <<", [4] Double Down";
             validChoices.push_back(4);
         }
 
         if (player->getHandCount() == 2 && player->get_face_value(0) == player->get_face_value(1)){ // player has option to split
-            cout << ", (5) Split";
+            cout << ", [5] Split";
             validChoices.push_back(5);
         } 
 
         if (dealer->getCardValue(1) == 11 && 
                 (player->getBank() >= (player->getBet() / 2 ))){ // dealer has an ace showing, player must have bank at least 1/2 of bet
-            cout << ", (6) Insurance";
+            cout << ", [6] Insurance";
             validChoices.push_back(6);
         }
+        cout << ", [7] Advice";
+        validChoices.push_back(7);
+
         cout << endl;
 
         cin >> userIn;
