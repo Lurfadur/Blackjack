@@ -150,6 +150,11 @@ class Player{
          */
         string get_face_value(int);
 
+        /*
+         * Dicards the entire hand
+         */
+        void discardHand();
+
         bool inRound = true;//quick way to test if the player is in the round
     protected:
         Player* parent = NULL;//used for keeping track of split hands

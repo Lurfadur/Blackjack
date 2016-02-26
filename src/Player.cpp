@@ -154,3 +154,6 @@ Card* Player::getCard(int index){
 string Player::get_face_value(int pos){
     return hand.get_face_value(pos);
 }
+void Player::discardHand(){
+  hand.discardHand();
+}
