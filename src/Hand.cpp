@@ -104,6 +104,10 @@ void Hand::discard(int position){
     }
 }
 
+void Hand::discardHand(){
+  cards.clear();
+}
+
 int Hand::getSum(){
     /*Declare variables*/
     int retSum = 0;

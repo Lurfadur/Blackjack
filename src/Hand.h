@@ -44,6 +44,11 @@ class Hand{
          */
         void discard(Card*);
 
+        /*
+         *Removes all cards from the hand
+         */
+        void discardHand();
+
         /*Function to remove Card from Hand based on index
          * takes int position
          * returns nothing
