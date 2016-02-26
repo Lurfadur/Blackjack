@@ -6,10 +6,10 @@
 CXX = g++
 
 #Non-test build flags
-CXXFLAGS = --std=c++11 -finput-charset=utf-8 -Wall
+CXXFLAGS = --std=c++11 -finput-charset=utf-8
 
 #Test build flags
-CXXTFLAGS = --std=c++11 -finput-charset=utf-8 -Wall -g
+CXXTFLAGS = --std=c++11 -finput-charset=utf-8 -g
 
 SRCEXT := cpp
 SRCDIR := src

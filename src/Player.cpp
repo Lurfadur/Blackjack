@@ -113,7 +113,7 @@ int Player::getBet(){
 
 void Player::printStatus(){
     hand.displayHand();
-    std::cout << "Bank: " << bank << std::setw(20) << "bet: " << bet << std::setw(40) << "Insurance: " << sideBet << std::endl;
+    std::cout << "Hand sum: " << getHandSum() << std::setw(20) << "bet: " << bet << std::setw(20) << "Insurance: " << std::setw(10) << sideBet << "Bank: " << bank  << std::endl;
 }
 
 ///////////////Hand helper methods////////////////
