@@ -221,7 +221,7 @@ void check_victory(vector<Player *> &players, Dealer *dealer){
             }
             else if (pHandSum == dHandSum){
                 // player ties with dealer
-                players[i]->winBet(0);
+                players[i]->winBet(1);
                 cout  << "Player " << i + 1 
                     << " ties with the dealer. Player pushes." 
                     << endl;
@@ -229,12 +229,12 @@ void check_victory(vector<Player *> &players, Dealer *dealer){
 
             else if (pHandSum < BLACKJACK && dHandSum > BLACKJACK){ 
                 // player has higher hand value
-                players[i]->winBet(0);
+                players[i]->winBet(1);
                 cout << "Dealer busts and Player " << i + 1 << " wins!" << endl;
             }
             else if (pHandSum < BLACKJACK && pHandSum > dHandSum){
                 // player has higher hand value, dealer does not bust
-                players[i]->winBet(0);
+                players[i]->winBet(1);
                 cout << "Player " << i + 1 
                     << " has a better hand than the dealer. Player wins!"
                     << endl;
