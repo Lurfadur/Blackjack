@@ -1,26 +1,27 @@
 #include <unistd.h>
 #include <string>
+#include <exception>
 #include "Controller.h"
 
 #define BLACKJACK 21 // Constant for the number for Blackjack
 #define DEALER_HIT 16 // Constant for when the dealer must hit
 #define DEFAULT_BANK_AMOUT 1000
+#define SURRENDER_AMOUNT 0.5 // Constant for the amount to be multiplied to the player's bet when doing a surrender
 
 Controller::Controller(int numPlayers, int numDecks){
-  //Player creation
+  //init dealer
+  dealer = new Dealer();
+  //init players
   players = new vector<Player*>;
-  // playerCount used for loop bounds
+
   for (int i = 0; i < numPlayers; i++){
-    Player* newPlayer = new Player(DEFAULT_BANK_AMOUT);
-    // Need to pass bank ammount, or default is 1000
-    if (newPlayer == NULL){
-        // error checking
-        cout << "ERROR: error in assigning memory to \
-        new Player, exiting program" << endl;
-        exit(1);
+    try{
+      Player* newPlayer = new Player(DEFAULT_BANK_AMOUT, i+1);
+      players->push_back(newPlayer);
+    }catch(std::exception& e){
+      cout << e.what() << endl;
+      exit(1);
     }
-    cout << players->capacity();
-    players->push_back(newPlayer);
   }
 
   //Create and shuffle the decks
@@ -219,9 +220,50 @@ void Controller::hit(Player* player){
     }
 }
 
-void Controller::player_split( Player *player){}
-void Controller::player_doubleDown(Player *player){}
-void Controller::offer_advice(int playerNum){}
+void Controller::player_split( Player *player){
+    Player *splitPlayer = new Player(player); // create a "new" player, give new player one of the pairs from parent player
+    splitPlayer->addCard(decks->getCard()); // give new player an extra card
+
+    players->push_back(splitPlayer); // push child onto vector
+    player->addCard(decks->getCard()); // give parent player an extra card
+}
+
+void Controller::player_doubleDown(Player *player){
+    // playerBet variable declared and initialized
+    int playerBet = player->getBet();
+    // playerBet used to change value in player
+    player->addBet(playerBet); 
+    player->addCard(decks->getCard());
+}
+
+void Controller::offer_advice(int playerNum){
+    string dealerTop = dealer->get_face_value(1); // assign dealerTop to the face value of dealer's top card
+
+    if (dealerTop.compare("A") == 0){ // top card is Ace
+        cout << "Extreme danger, a loss is likely." << endl;
+    }
+    else if (dealerTop.compare("K") == 0 ||
+            dealerTop.compare("Q") == 0 ||
+            dealerTop.compare("J") == 0 ||
+            dealerTop.compare("10") == 0){
+        cout << "Big trouble! You'll be lucky to push." << endl;
+    }
+    else if (dealerTop.compare("9") == 0){
+        cout << "You're a little uptight and maybe in trouble." << endl;
+    }
+    else if (dealerTop.compare("8") == 0 || 
+            dealerTop.compare("7") == 0){
+        cout << "Breathe a little easier. The dealer is beatable." << endl;
+    }
+    else if (dealerTop.compare("6") == 0 ||
+            dealerTop.compare("5") == 0 ||
+            dealerTop.compare("4") == 0){
+        cout << "Looking good. You are in the driver's seat." << endl;
+    }
+    else{
+        cout << "Wait and see. Be cautious." << endl;
+    }
+}
 
 //===================Helper methods==========================================//
 void Controller::bet(){
@@ -229,7 +271,7 @@ void Controller::bet(){
     for (int i = 0; i < players->size(); i++){
       bool loopBreak = false; // bool used to break while-loop
       while (!loopBreak){
-        cout << "Player " << i+1 << ", place a bet between 1 and " 
+        cout << "Player " << players->at(i)->getNum() << ", place a bet between 1 and " 
           << players->at(i)->getBank() << ": ";
 
         int betAmount = 0; // int amount for player bet
@@ -251,28 +293,45 @@ void Controller::bet(){
         }
       }
     }
-    display_wait(3);
+    display_wait(1);
 }
 
 void Controller::deal(){
+  clear();
+  cout << "Dealing..." << endl;
   for(int i=0; i<2; i++){
     dealer->addCard(decks->getCard());
     for(int j=0; j<players->size(); j++){
       players->at(j)->addCard(decks->getCard());
     }
   }
+  display_wait(1);
 }
 
-bool Controller::check_banks(){}
-void Controller::player_surrender(Player *player){}
+bool Controller::check_banks(){
+  bool retVal = false; // assume no players are able to play
+  for (int i = 0; i < players->size(); i++){
+    if (players->at(i)->getBank() > 0){
+      retVal = true; // if player still has money in their bank, set to true
+    }
+  }
+  return retVal;
+}
+
+void Controller::player_surrender(Player *player){
+  player->winBet(SURRENDER_AMOUNT); // constant used here
+  player->inRound = false; // flip the inRound bool for the player
+}
+
 void Controller::check_victory(){
-    cout << "Dealer's hand is: " << dealer->getHandSum() << endl;
+    clear();
+    //display dealer's hand
+    dealer->revealHand();
+    cout << endl;
     // display player hands
     for (int i = 0; i < players->size(); i++){
-      cout << "Player " << i + 1 
-        << " hand is: " 
-        << players->at(i)->getHandSum() << endl;
       players->at(i)->printStatus();
+      cout << endl;
     }
 
 
@@ -287,14 +346,14 @@ void Controller::check_victory(){
             if (pHandSum == BLACKJACK && dHandSum != BLACKJACK){
                 // player wins Blackjack
                 players->at(i)->winBet(1.5);
-                cout  << "Player " << i + 1 
+                cout  << "Player " << players->at(i)->getNum() 
                     << " has Blackjack! Player wins 1.5 x their bet." 
                     << endl;
             }
             else if (pHandSum == dHandSum){
                 // player ties with dealer
-                players->at(i)->winBet(1);
-                cout  << "Player " << i + 1 
+                players->at(i)->winBet(0);
+                cout  << "Player " << players->at(i)->getNum() 
                     << " ties with the dealer. Player pushes." 
                     << endl;
             }
@@ -302,12 +361,12 @@ void Controller::check_victory(){
             else if (pHandSum < BLACKJACK && dHandSum > BLACKJACK){ 
                 // player has higher hand value
                 players->at(i)->winBet(1);
-                cout << "Dealer busts and Player " << i + 1 << " wins!" << endl;
+                cout << "Dealer busts and Player " << players->at(i)->getNum() << " wins!" << endl;
             }
             else if (pHandSum < BLACKJACK && pHandSum > dHandSum){
                 // player has higher hand value, dealer does not bust
                 players->at(i)->winBet(1);
-                cout << "Player " << i + 1 
+                cout << "Player " << players->at(i)->getNum() 
                     << " has a better hand than the dealer. Player wins!"
                     << endl;
             }
@@ -318,12 +377,31 @@ void Controller::check_victory(){
                 // Dealer has a better hand than the player
                 players->at(i)->loseBet();
                 cout << "Dealer has a better hand than Player " 
-                    << i + 1 << ". Player loses." << endl;
+                    << players->at(i)->getNum() << ". Player loses." << endl;
             }
         }else{ // player surrendered, gets half their bet back
             cout << "Player surrendered their hand, player gets half their bet back." << endl;
         }
     }
+  display_wait(5);
+  //rejoin any split players
+  joinPlayers();
+  //kick any empty banked players
+  kickPlayers();
+
+}
+void Controller::kickPlayers(){
+  clear();
+  for(int i=0; i<players->size(); i++){
+    if(players->at(i)->getBank() <= 0){
+      if(players->at(i)->getParent() == NULL){
+      cout << "Kicking player " << players->at(i)->getNum() 
+            << " for being a broke ass" << endl;
+      }
+      players->erase(players->begin()+i);
+      i--;
+    }
+  }
 }
 
 void Controller::player_create(){
@@ -369,6 +447,8 @@ void Controller::playerTurns(){
     int playerInput;
     //iterate through player turns
     for (int i = 0; i < players->size(); i++){
+      clear();
+      displayBoard(i);
 
       //while (splitCheck){
       playerTurn =  true;
@@ -382,6 +462,8 @@ void Controller::playerTurns(){
         if (players->at(i)->getHandSum() != BLACKJACK){
           // playerInput assigned new value
           playerInput = player_choice(i);
+        }else{
+          playerInput = 9;
         }
 
         /*
@@ -398,13 +480,13 @@ void Controller::playerTurns(){
             hit(players->at(i));
             clear();
             displayBoard(i);
-            cout << "Player " << i + 1 << " hits." << endl;
+            cout << "Player " << players->at(i)->getNum() << " hits." << endl;
             splitCheck = false;
             playerTurn = false;
             break;
           case 2:
             // player stands, do nothing
-            cout << "Player " << i + 1 << " stands." << endl;
+            cout << "Player " << players->at(i)->getNum() << " stands." << endl;
             //players->at(i)->printStatus();
             splitCheck = false;
             playerTurn = false;
@@ -412,35 +494,35 @@ void Controller::playerTurns(){
           case 3:
             // player surrenders their hand
             player_surrender(players->at(i));
-            cout << "Player " << i + 1 << " surrenders their hand." << endl;
+            cout << "Player " << players->at(i)->getNum() << " surrenders their hand." << endl;
             splitCheck = false;
             playerTurn = false;
             break;
           case 4:
             // player wants to double down
             player_doubleDown(players->at(i));
-            cout << "Player " << i + 1 << " doubles down." << endl;
+            cout << "Player " << players->at(i)->getNum() << " doubles down." << endl;
             splitCheck = false;
             playerTurn = false;
             break;
           case 5:
             // do a split
             player_split(players->at(i));
-            cout << "Player " << i + 1 << " splits." << endl;
+            cout << "Player " << players->at(i)->getNum() << " splits." << endl;
             //splitCheck = true;
             //********SPLIT PLAYER*********
             cout << "********SPLIT PLAYER*********" << endl;
-            playerTurn = false;
+            playerTurn = true;
             break;
           case 6:
             // do insurance
             players->at(i)->insure();
-            cout << "Player " << i + 1 << " takes insurance." << endl;
+            cout << "Player " << players->at(i)->getNum() << " takes insurance." << endl;
             splitCheck = false;
             playerTurn = false;
             break;
           case 7:
-            cout << "Player" << i+1 << " asks for advice." << endl;
+            cout << "Player" << players->at(i)->getNum() << " asks for advice." << endl;
             advice = true;
             break;
           default:
@@ -454,9 +536,11 @@ void Controller::playerTurns(){
       //}
       display_wait(1);
     }// end for-loop
+
 }
 
 void Controller::dealerTurn(){
+    clear();
     // do dealer AI here
     cout << endl << "Dealer's hand:" << endl;
     dealer->revealHand();
@@ -482,9 +566,32 @@ void Controller::discardHands(){
     for (int i = 0; i < players->size(); i++){
         players->at(i)->discardHand();
         //check if any players need to be removed
-        if(players->at(i)->getBank() == 0){
-          players->erase(players->begin()+i);
-        }
+        //if(players->at(i)->getBank() == 0){
+        //  players->erase(players->begin()+i);
+        //}
     }
 
+}
+
+void Controller::joinPlayers(){
+  for(int i=0; i<players->size(); i++){
+    if(players->at(i)->getParent() != NULL){
+      //unsplit the player
+      players->at(i)->unsplit();
+    }
+  }
+}
+
+int Controller::getPlayerNum(int i){
+  if(i < players->size() && i >= 0){
+    return players->at(i)->getNum();
+  }else{
+    cout << i << " " << players->size() << endl;
+    cout << "Player not found" << endl;
+    return 0;
+  }
+}
+
+int Controller::getPlayerCount(){
+  return players->size();
 }

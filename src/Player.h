@@ -39,7 +39,8 @@ class Player{
          */
         int getBank();
 
-        /*Function to update the Player bank
+        /*adds amount to Player bank
+         * can be negative
          * takes int amount
          * returns nothing
          */
@@ -164,6 +165,11 @@ class Player{
           sets player number
         */
         void setNum(int num);
+
+        /*
+          returns player's parent if any
+        */
+        Player* getParent();
 
         bool inRound = true;//quick way to test if the player is in the round
     protected:

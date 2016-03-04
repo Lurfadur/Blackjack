@@ -61,6 +61,10 @@ int Player::getBank(){
     return bank;
 }
 
+Player* Player::getParent(){
+  return parent;
+}
+
 void Player::updateBank(int amount){
     bank += amount; // bank variable changed
 }

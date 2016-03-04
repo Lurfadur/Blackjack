@@ -70,6 +70,11 @@ class Controller{
     void player_create();
     bool player_createCheck(Player *player);
     bool shuffle_check(int numDecks);
+    void joinPlayers();
+    void kickPlayers();
+    int getPlayerNum(int i);
+    int getPlayerCount();
+
     /*
       discards the players and dealers hands
     */

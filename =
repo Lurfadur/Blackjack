@@ -77,18 +77,9 @@ int main(int argc, char **argv){
     controller->playerTurns();
     controller->dealerTurn();
     controller->check_victory();
-    controller->discardHands();
+    controller->discard();
 
     //ask the player to keep playing
-    cout << "Players ";
-    for(int i=0; i<controller->getPlayerCount(); i++){
-      cout << controller->getPlayerNum(i);
-      if(i != controller->getPlayerCount()-1){
-        cout << ", ";
-      }else{
-        cout << " ";
-      }
-    }
     cout << "Would you like to keep playing?";
     cin >> keepPlaying;
 
