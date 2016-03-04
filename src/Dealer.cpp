@@ -9,5 +9,5 @@ void Dealer::displayHand(){
 }
 void Dealer::revealHand(){
     hand.displayHand();
-    std::cout << "Dealer's hand is: " << hand.getSum();
+    std::cout << "Dealer's hand is: " << hand.getSum() << std::endl;
 }
