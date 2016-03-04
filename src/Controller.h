@@ -85,8 +85,8 @@ class Controller{
     */ 
     void dealerTurn();
 
-    vector<Player*>* players;
   private:
+    vector<Player*>* players;
     Deck* decks;
     Dealer* dealer;
     

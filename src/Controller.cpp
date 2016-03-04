@@ -4,16 +4,23 @@
 
 #define BLACKJACK 21 // Constant for the number for Blackjack
 #define DEALER_HIT 16 // Constant for when the dealer must hit
+#define DEFAULT_BANK_AMOUT 1000
 
 Controller::Controller(int numPlayers, int numDecks){
   //Player creation
+  players = new vector<Player*>;
   // playerCount used for loop bounds
   for (int i = 0; i < numPlayers; i++){
-    player_create(); 
-    if (!player_createCheck(players->at(i))){
-      cout << "ERROR: error in player creation, exiting program" << endl;
-      exit(1);
+    Player* newPlayer = new Player(DEFAULT_BANK_AMOUT);
+    // Need to pass bank ammount, or default is 1000
+    if (newPlayer == NULL){
+        // error checking
+        cout << "ERROR: error in assigning memory to \
+        new Player, exiting program" << endl;
+        exit(1);
     }
+    cout << players->capacity();
+    players->push_back(newPlayer);
   }
 
   //Create and shuffle the decks
@@ -248,12 +255,12 @@ void Controller::bet(){
 }
 
 void Controller::deal(){
-    for(int i=0; i<2; i++){
-      dealer->addCard(decks->getCard());
-      for(int j=0; j<players->size(); j++){
-        players->at(j)->addCard(decks->getCard());
-      }
+  for(int i=0; i<2; i++){
+    dealer->addCard(decks->getCard());
+    for(int j=0; j<players->size(); j++){
+      players->at(j)->addCard(decks->getCard());
     }
+  }
 }
 
 bool Controller::check_banks(){}
@@ -320,28 +327,19 @@ void Controller::check_victory(){
 }
 
 void Controller::player_create(){
-    Player * newPlayer = new Player();
-    // Need to pass bank ammount, or default is 1000
-    if (newPlayer == NULL){
-        // error checking
-        cout << "ERROR: error in assigning memory to new Player, exiting program" 
-            << endl;
-        exit(1);
-    }
-    players->push_back(newPlayer);
 }
 
-bool Controller::player_createCheck(Player *player){
-    bool retVal = true; // declare return value, assign value to true
-    if (player->getBank() <= 0){
-        /*
-           change return value to false if player's bank 
-           is less than or equal to 0
-         */
-        retVal = false; 
-    }
-    return retVal; // return bool value of retVal
-}
+//bool Controller::player_createCheck(Player *player){
+//    bool retVal = true; // declare return value, assign value to true
+//    if (player->getBank() <= 0){
+//        /*
+//           change return value to false if player's bank 
+//           is less than or equal to 0
+//         */
+//        retVal = false; 
+//    }
+//    return retVal; // return bool value of retVal
+//}
 
 bool Controller::shuffle_check(int numDecks){
 
