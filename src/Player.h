@@ -9,7 +9,7 @@ class Player{
          * takes int bankAmount
          * returns initialized Player class
          */
-        Player(int bankAmount);
+        Player(int bankAmount, int num);
 
         /*
          * Create a Player
@@ -155,11 +155,22 @@ class Player{
          */
         void discardHand();
 
+        /*
+          returns playerNum
+        */
+        int getNum();
+    
+        /*
+          sets player number
+        */
+        void setNum(int num);
+
         bool inRound = true;//quick way to test if the player is in the round
     protected:
         Player* parent = NULL;//used for keeping track of split hands
         Hand hand; //Hand class represents a player's hand
     private:
+        int playerNum; //player identifier... 1+index of controller::players
         int bank;	//Used to hold amount of player money
         int bet;	//amount taken from bank in bet()
         int sideBet;	//used in insure()

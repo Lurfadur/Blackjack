@@ -6,11 +6,12 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Player::Player(int bankAmount){
+Player::Player(int bankAmount, int num){
     if (bankAmount < 0){
         bankAmount *= -1;
     }
     bank = bankAmount;
+    playerNum = num;
     bet = 0;
     sideBet = 0;
     parent = NULL;
@@ -19,6 +20,7 @@ Player::Player(int bankAmount){
 
 Player::Player(Player* pPlayer){
     bank = 0;
+    playerNum = pPlayer->getNum();
     sideBet = 0;
     inRound = true;
     if (pPlayer->parent == NULL){
@@ -112,8 +114,17 @@ int Player::getBet(){
 }
 
 void Player::printStatus(){
+    std::cout << "Player " << playerNum << ":" << std::endl;
     hand.displayHand();
     std::cout << "Hand sum: " << getHandSum() << std::setw(10) << "bet: " << bet << std::setw(20) << "Insurance: " << sideBet << std::setw(10) << "Bank: " << bank  << std::endl;
+}
+
+int Player::getNum(){
+  return playerNum;
+}
+
+void Player::setNum(int num){
+    playerNum = num;
 }
 
 ///////////////Hand helper methods////////////////
