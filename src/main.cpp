@@ -72,78 +72,20 @@ int main(int argc, char **argv){
     cout << "Round number: " << roundNumber << endl;
     roundNumber++;
 
-
-    // ask players to bet
-    for (int i = 0; i < numPlayers; i++){
-      bool loopBreak = false; // bool used to break while-loop
-
-      while (!loopBreak){
-        cout << "Player " << i+1 << ", place a bet between 1 and " 
-          << controller->players->at(i)->getBank() << ": ";
-
-        int betAmount = 0; // int amount for player bet
-        cin >> betAmount;
-
-        if (betAmount <= controller->players->at(i)->getBank() 
-            && betAmount > 0 && cin){
-          //valid input
-          loopBreak = true; 
-          cout << endl << "Adding " << betAmount 
-               << " to your bet." << endl;
-
-          controller->players->at(i)->addBet(betAmount);
-
-        }else{
-          // invalid input
-          cin.clear();
-          cin.ignore(256, '\n');
-        }
-      }
-      
-      clear();
-    }
-    
+    controller->bet();
     controller->deal();
-
     controller->playerTurns();
     controller->dealerTurn();
-
-
-
-    controller->check_victory(); // check for victory conditions
-
-    // remove cards from dealer/player hands
-    while (dealer->getHandCount() > 0){
-      dealer->discard(0);
-    }
-
-    for (int i = 0; i < players.size(); i++){
-        players[i]->discardHand();
-        //check if any players need to be removed
-        if(players[i]->getBank() == 0){
-          players.erase(players.begin()+i);
-        }
-    }
-
-    //display_wait(2);
-    // clear screen
-   // clear();
+    controller->check_victory();
 
     //ask the player to keep playing
     cout << "Would you like to keep playing?";
     cin >> keepPlaying;
 
 } // end of game
-//cout << "None of the remaining players have "
-//<< "enough bank left to bet with." 
-//<< endl << "Thanks for playing!" << endl;
-cout << "Thanks for playing!" << endl;
 
-// Do memory cleanup
-for (int i = 0; i < players.size(); i++){
-  delete(players[i]);
-}
-delete(dealer);
+  cout << "Thanks for playing!" << endl;
+  free(controller);
 } //end main
 
 

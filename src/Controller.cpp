@@ -21,6 +21,14 @@ Controller::Controller(int numPlayers, int numDecks){
   decks->shuffle();
 }
 
+Controller::~Controller(){
+  // Do memory cleanup
+  //delete(dealer);
+  //for (int i = 0; i < players.size(); i++){
+  //  delete(players[i]);
+  //}
+}
+
 //===================Display interface methods===============================//
 void Controller::clear(){
   printf("\e[1;1H\e[2J");
@@ -209,6 +217,36 @@ void Controller::player_doubleDown(Player *player){}
 void Controller::offer_advice(int playerNum){}
 
 //===================Helper methods==========================================//
+void Controller::bet(){
+  clear();
+    for (int i = 0; i < players->size(); i++){
+      bool loopBreak = false; // bool used to break while-loop
+      while (!loopBreak){
+        cout << "Player " << i+1 << ", place a bet between 1 and " 
+          << players->at(i)->getBank() << ": ";
+
+        int betAmount = 0; // int amount for player bet
+        cin >> betAmount;
+
+        if (betAmount <= players->at(i)->getBank() 
+            && betAmount > 0 && cin){
+          //valid input
+          loopBreak = true; 
+          cout << endl << "Adding " << betAmount 
+               << " to your bet." << endl;
+
+          players->at(i)->addBet(betAmount);
+
+        }else{
+          // invalid input
+          cin.clear();
+          cin.ignore(256, '\n');
+        }
+      }
+    }
+    display_wait(3);
+}
+
 void Controller::deal(){
     for(int i=0; i<2; i++){
       dealer->addCard(decks->getCard());
@@ -433,6 +471,22 @@ void Controller::dealerTurn(){
       dealer->addCard(decks->getCard());
       cout << "Dealer is hitting..." << endl;
       dealer->revealHand();
+    }
+
+}
+
+void Controller::discardHands(){
+    // remove cards from dealer/player hands
+    while (dealer->getHandCount() > 0){
+      dealer->discard(0);
+    }
+
+    for (int i = 0; i < players->size(); i++){
+        players->at(i)->discardHand();
+        //check if any players need to be removed
+        if(players->at(i)->getBank() == 0){
+          players->erase(players->begin()+i);
+        }
     }
 
 }

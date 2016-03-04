@@ -11,6 +11,7 @@ using std::cin;
 class Controller{
   public:
     Controller(int numPlayers, int numDecks);
+    ~Controller();
     //display interface methods
 
     /*
@@ -61,6 +62,7 @@ class Controller{
     void offer_advice(int playerNum);
 
     //helper methods
+    void bet();
     void deal();
     bool check_banks();
     void player_surrender(Player *player);
@@ -68,6 +70,10 @@ class Controller{
     void player_create();
     bool player_createCheck(Player *player);
     bool shuffle_check(int numDecks);
+    /*
+      discards the players and dealers hands
+    */
+    void discardHands();
 
     /*
       Iterates through players' turns
