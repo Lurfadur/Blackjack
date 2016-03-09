@@ -15,7 +15,22 @@ using std::cout;
 using std::cin;
 using std::vector;
 using std::endl;
+using std::string;
 
+int getInput(vector<int>* choices){
+  string in;
+  getline(cin, in);
+  
+  //convert to integer
+  int opt = in[0] - 48;
+
+  for(int i=0; i<choices->size(); i++){
+    if(opt == choices->at(i)){
+      return opt;
+    }
+  }
+  return 0;
+}
 
 
 int main(int argc, char **argv){
@@ -26,7 +41,9 @@ int main(int argc, char **argv){
   int numPlayers = 0;
   while(sentinel == false){
     cout << "How many players? ";
-    cin >> numPlayers;
+    string in;
+    getline(cin, in);
+    numPlayers = in[0]-48;
     if(numPlayers >= MIN_PLAYERS && numPlayers < MAX_PLAYERS){
       sentinel = true;
     }else{
@@ -43,7 +60,9 @@ int main(int argc, char **argv){
   
   while(sentinel == false){
     cout << "How many decks? ";
-    cin >> numDecks;
+    string in;
+    getline(cin, in);
+    numDecks = in[0]-48;
     if(numDecks >= MIN_DECKS && numDecks < MAX_DECKS){
       sentinel = true;
     }else{
@@ -90,7 +109,9 @@ int main(int argc, char **argv){
       }
     }
     cout << "Would you like to keep playing?";
-    cin >> keepPlaying;
+    string in;
+    getline(cin, in);
+    keepPlaying = in[0];
 
 } // end of game
 

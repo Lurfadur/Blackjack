@@ -275,7 +275,19 @@ void Controller::bet(){
           << players->at(i)->getBank() << ": ";
 
         int betAmount = 0; // int amount for player bet
-        cin >> betAmount;
+        string in;
+        getline(cin, in);
+        //convert to integer
+        int counter = 0;
+        while(in.size() > 0){
+          if(counter > 0){
+            betAmount += (in.back()-48)*(10*counter);
+          }else{
+            betAmount += in.back()-48;
+          }
+          in.pop_back();
+          counter++;
+        }
 
         if (betAmount <= players->at(i)->getBank() 
             && betAmount > 0 && cin){
